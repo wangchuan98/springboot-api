@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.dao.CourseMapper">
+
+
+    <resultMap id="CourseCoachMap" type="Course">
+        <id property="courseid" column="courseid"/>
+        <result property="coursetype" column="coursetype"></result>
+        <result property="licensetype" column="licensetype"></result>
+        <result property="subject" column="subject"></result>
+        <!--映射关系，指定属性与属性的类型-->
+        <association property="coach" javaType="Coach">
+            <id property="coachid" column="coachid"></id>
+            <result property="name" column="name"></result>
+            <result property="coachcar" column="coachcar"></result>
+            <result property="phone" column="phone"></result>
+        </association>
+    </resultMap>
+
+
+    <select id="querybyStudentid" resultMap="CourseCoachMap">
+    select
+      course.courseid,
+      course.coursetype,
+      course.licensetype,
+      course.subject,
+      course.coachid,
+      coach.name,
+      coach.coachcar,
+      coach.phone
+    from course  inner join  coach
+    on  course.coachid=coach.coachid
+    where
+    course.studentid=#{userid} and course.status=1
+</select>
+
+</mapper>

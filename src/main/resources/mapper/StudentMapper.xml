@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.dao.StudentMapper">
+
+<sql id="studentSelect">
+         `studentid`,
+         `name`,
+         `sex`,
+         `age`,
+         `phone`,
+         `face`
+</sql>
+    <update id="updatebyStudentId">
+        update  student
+        <set>
+            <if test="map.name!=null and map.name!=''">
+                  `name`=#{map.name},
+            </if>
+            <if test="map.age!=null ">
+                `age`=#{map.age},
+            </if>
+            <if test="map.sex!=null">
+                `sex`=#{map.sex},
+            </if>
+            <if test="map.phone!=null and map.phone!=''">
+                `phone`=#{map.phone},
+            </if>
+            <if test="map.face!=null and map.face!=''">
+                `face`=#{map.face},
+            </if>
+        </set>
+        where  studentId=#{map.studentId}
+    </update>
+
+
+    <delete id="deletebyStudentId">
+         delete  from  student where
+         studentid in
+         <foreach collection="list" open="(" separator="," close=")" item="item">
+             #{item}
+         </foreach>
+    </delete>
+
+    <select id="querybyUserid" resultType="Student">
+        select
+         `studentid`,
+         `name`,
+         `sex`,
+         `age`,
+         `phone`,
+         `face`
+         from student
+        where
+        userid=#{userid}
+    </select>
+    <resultMap id="studentList" type="Student">
+        <id javaType="java.lang.String" jdbcType="VARCHAR" property="studentId" column="studentid"></id>
+        <result javaType="java.lang.Integer" jdbcType="INTEGER" property="sex" column="sex"></result>
+        <result javaType="java.lang.Integer" jdbcType="INTEGER" property="age" column="age"></result>
+        <result javaType="java.lang.String" jdbcType="VARCHAR" property="name" column="name"></result>
+        <result javaType="java.lang.String" jdbcType="VARCHAR" property="phone" column="phone"></result>
+        <result javaType="java.lang.String" jdbcType="VARCHAR" property="face" column="face"></result>
+        <result javaType="java.lang.String" jdbcType="VARCHAR" property="userid" column="userid"></result>
+    </resultMap>
+
+
+    <select id="queryByParams"  resultMap="studentList">
+        select
+        <include refid="studentSelect"></include>
+        from student
+        <where>
+            <if test="map.studentId!=null and map.studentId!=''">
+            and  studentid=#{map.studentId}
+            </if>
+            <if test="map.name!=null and map.name!=''">
+                and  name=#{map.name}
+            </if>
+        </where>
+       limit #{map.currIndex} , #{map.pageSize}
+
+
+    </select>
+
+    <select id="queryCountByParams"  resultType="java.lang.Integer">
+        select
+        count(*)
+        from student
+        <where>
+            <if test="map.studentId!=null and map.studentId!=''">
+                and  studentid=#{map.studentId}
+            </if>
+            <if test="map.name!=null and map.name!=''">
+                and  name=#{map.name}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByMap"  resultMap="studentList" >
+        select
+        <include refid="studentSelect"></include>
+         from student
+        where
+        <choose>
+            <when test="map.keys.size > 0">
+                <foreach collection="map.keys" item="key"
+                         separator="AND">
+                    ${key} = #{map[${key}]}
+                </foreach>
+            </when>
+            <otherwise>
+                1=1
+            </otherwise>
+        </choose>
+
+
+
+    </select>
+
+    <insert id="studentInsert" parameterType="Student">
+        insert  into  student(`studentid`,`name`,`sex`,`age`,`phone`,`face`,`userid`)
+        values ( #{studentId}, #{name}, #{sex}, #{age}, #{phone}, #{face},#{userid})
+    </insert>
+
+</mapper>

@@ -1,0 +1,100 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<style type="text/css">
+    .item{
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #dedede;
+        margin-bottom: -1px;
+    }
+    .item:hover{
+        border: 1px solid #169fe6;
+        position: relative;
+        z-index: 10;
+    }
+
+    .item  itemtitle{
+        font-size: 21px;
+        line-height: 1.5em;
+        float: left;
+        clear: right;
+    }
+    .itemcon{
+        padding: 15px 0;
+        clear: both;
+    }
+    .decs{
+        font-size: 14px;
+        color: #333;
+        line-height: 200%;
+        word-wrap: break-word;
+        word-break: break-all;
+        overflow: hidden;
+    }
+
+
+</style>
+</head>
+
+<body>
+
+<div style="" class="item"  th:each="item : ${subjectList}">
+    <div class="itemtitle"  th:text="${item.title}"></div>
+    <div class="itemcon">
+    <div class="decs"  th:text="${item.content}">
+    </div>
+    </div>
+    <div style="padding-top: 10px">
+        <button class="btn btn-default btn-primary" style="margin-left: 20px">详情</button>
+        <button class="btn btn-default btn-primary" style="margin-left: 20px" th:onclick="skilldelete([[${item.id}]])">删除</button>
+    </div>
+</div>
+<script>
+    function skilldelete(id){
+
+        var subject=parseInt($("#subjectTabContent").children(".active").attr("data-subject"));
+        alert(subject);
+        var page=1;
+        if(subject==2){
+            page=twocurrentpage;
+        }else {
+            page=threecurrentpage;
+        }
+        console.log("twocurrentpage"+twocurrentpage);
+        console.log("threecurrentpage"+threecurrentpage);
+        console.log("page"+page);
+        $.ajax(
+            {
+                url:"/admin/skilldelete?id="+id,
+                type:"POST",
+                dateType:"json",
+                success: function (data) {
+                    alert(data.msg);
+                    var  reloadurl="/admin/skilllist?pageNumber="+page+"&category="+subject;
+                    if(subject==2){
+                        $("#subject2_list").load(reloadurl);
+                    }else {
+                        $("#subject3_list").load(reloadurl);
+                    }
+
+
+                },
+                error:function () {
+                    alert("网络错误");
+                    console.log("1 异步调用返回失败,XMLHttpResponse.readyState:"+XMLHttpResponse.readyState);
+                    console.log("2 异步调用返回失败,XMLHttpResponse.status:"+XMLHttpResponse.status);
+                    console.log("3 异步调用返回失败,textStatus:"+textStatus);
+                    console.log("4 异步调用返回失败,errorThrown:"+errorThrown);
+                }
+            }
+        )
+    }
+
+
+</script>
+</body>
+
+</html>

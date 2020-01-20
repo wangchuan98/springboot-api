@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>简约车管理员端</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
+    <link rel="stylesheet" th:href="@{/css/ionicons.css}">
+    <link rel="stylesheet" th:href="@{/css/skins/skin-blue.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-tab.css}">
+
+</head>
+
+<body>
+
+
+
+
+
+<div class="panel-body" style="padding-bottom:0px">
+
+    <div class="panel panel-default" style="margin-bottom: 0px">
+        <div class="panel-body row">
+            <form class="form-horizontal">
+                <div class="form-group ">
+                    <label class="col-sm-4 control-label">学员编号</label>
+                    <div class="col-sm-8">
+                        <p  class="form-control-static text-center" th:text="${studentId}"></p>
+                    </div>
+                </div>
+
+
+                <div class="form-group ">
+                    <label class="col-sm-4 control-label">姓名</label>
+                    <div class="col-sm-8">
+                        <p  class="form-control-static text-center" th:text="${name}"></p>
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <label class="col-sm-4 control-label">性别</label>
+                    <div class="col-sm-8 text-center">
+                        <p  class="form-control-static" th:text="${sex==0?'女':'男'}"></p>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-sm-4 control-label">年龄</label>
+                    <div class="col-sm-8">
+                        <p  class="form-control-static text-center" th:text="${age}"></p>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-sm-4 control-label">电话</label>
+                    <div class="col-sm-8">
+                        <p  class="form-control-static text-center"th:text="${phone}" ></p>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

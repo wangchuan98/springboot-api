@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.dao.SubjectSkillMapper">
+
+
+
+<select id="querySkillCount" resultType="java.lang.Integer" >
+    SELECT COUNT(*) FROM subjectskill GROUP BY category ORDER BY category
+</select>
+
+
+
+    <select id="SkillqueryByParam" resultType="SubjectSkill" >
+    SELECT
+     id,
+     category,
+     title,
+     content,
+     creator
+     FROM subjectskill where
+     category=#{map.category} limit #{map.currIndex} , #{map.pageSize}
+</select>
+
+    <delete id="deletebyId">
+        delete  from  subjectskill where id=#{id}
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>简约车管理员端</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
+    <link rel="stylesheet" th:href="@{/css/ionicons.css}">
+    <link rel="stylesheet" th:href="@{/css/AdminLTE.css}">
+    <link rel="stylesheet" th:href="@{/css/skins/skin-blue.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-tab.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-dialog.css}">
+
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/js/jquery.validate.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/adminlte.js}"></script>
+    <script th:src="@{/js/bootstrap-tab.js}"></script>
+    <script th:src="@{/js/bootstrap-select.js}"></script>
+    <script th:src="@{/js/bootstrapValidator.min.js}"></script>
+    <script th:src="@{/js/myCommon.js}"></script>
+    <script th:src="@{/js/bootstrap-dialog.js}"></script>
+    <script th:src="@{/js/bootstrap-table.js}"></script>
+    <script th:src="@{/js/bootstrap-table-zh-CN.js}"></script>
+    <script th:src="@{/js/bootstrap-table-treegrid.js}"></script>
+    <script th:src="@{/js/jquery.treegrid.min.js}"></script>
+    <script th:src="@{/js/bootstrap-paginator.js}"></script>
+
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+
+<header class="main-header">
+    <a href="#" class="logo">
+        <span class="logo-lg">后台管理系统</span>
+    </a>
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="hidden-xs" th:text=${"欢迎你，"+session.nickname}></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="user-header">
+                            <p>
+                                你好，管理员
+                            </p>
+                        </li>
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="#" class="btn btn-default btn-flat">个人信息</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="#" class="btn btn-default btn-flat">注销</a>
+                            </div>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header"><span class="fa-lg">系统菜单</span></li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>学员设置</span>
+                    <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="javascript:void(0)" class="myLeftMenu" data-id='addstudent' data="addstudent">学员新增</a></li>
+                    <li><a href="javascript:void(0)" class="myLeftMenu" data-id="studentmng"data="student/manage">学员管理</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>教练设置</span>
+                    <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="javascript:void(0)" class="myLeftMenu" data-id="m1" data="userList.html">教练新增</a>
+                    </li>
+                    <li><a href="javascript:void(0)" class="myLeftMenu" data-id="m2"
+                           data="html/roleList3.html">教练管理</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>课程设置</span>
+                    <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="javascript:void(0)" class="myLeftMenu" data="html/mytable.html">课程分配</a></li>
+                    <li><a href="javascript:void(0)" class="myLeftMenu" data="checkbox.html">课程管理</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>驾校设置</span>
+                    <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="javascript:void(0)" class="myLeftMenu" data="subjectskill">考驾技巧</a></li>
+                    <li><a href="javascript:void(0)" class="myLeftMenu" data="checkbox.html">驾校公告</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>管理员设置</span>
+                    <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="javascript:void(0)" class="myLeftMenu" data="html/mytable.html">管理员新增</a></li>
+                    <li><a href="javascript:void(0)" class="myLeftMenu" data="checkbox.html">管理员修改</a></li>
+                </ul>
+            </li>
+            <li><i class="fa fa-link"></i><a href="javascript:void(0)" class="myLeftMenu" data="checkbox.html">预约查询</a></li>
+            <li><a href="javascript:void(0)" class="myLeftMenu" data-id='notice' data="notice">驾校公告</a></li>
+            <li><a href="welcome.html" target="menuFrame"><i class="fa fa-link"></i> <span>联系我们</span></a></li>
+        </ul>
+    </section>
+</aside>
+
+<div class="content-wrapper">
+    <section class="content container-fluid">
+        <div id="container">
+        </div>
+    </section>
+</div>
+
+
+
+<script>
+
+    $("#container").tabs({
+        data: [
+            {
+                id: 'welcome',
+                text: '欢迎',
+                url: "welcome"
+            }
+        ],
+        showIndex: 0,
+        loadAll: false
+    });
+
+    $(function () {
+        $('ul.sidebar-menu li').click(function () {
+            var li = $('ul.sidebar-menu li.active');
+            li.removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('.myLeftMenu').click(function (e) {
+
+            var url = $(this).attr('data');
+            var dataid=$(this).attr('data-id');
+            var datatext=$(this).text();
+            console.log(url);
+
+            // $('#container').load(url);
+            var $tabContainer = $('#container');
+            var $tabId = $tabContainer.data('tabs').find(dataid);
+
+            if($tabId.length>0)
+            {
+                console.log("find:"+$tabId);
+                $tabContainer.data('tabs').showTab(dataid);
+            }
+            else {
+                console.log("no find");
+                $("#container").data("tabs").addTab({id:dataid, text: datatext, closeable: true, url: url});
+            }
+
+        });
+
+    })
+</script>
+</body>
+
+</html>

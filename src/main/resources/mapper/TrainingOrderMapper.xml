@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.dao.TrainingOrderMapper">
+
+
+    <select id="queryForStutas" resultMap="order">
+        select
+         `orderid`,
+         `locationid`,
+         `status`,
+         `date`
+         from trainingorder
+         where
+        `coachid`=#{coachid} and
+        `date`<![CDATA[ >= ]]>#{begindate}
+        and `date`<![CDATA[ <= ]]>#{enddate}
+    </select>
+    <resultMap id="order" type="TrainingOrder">
+        <id javaType="java.lang.String" jdbcType="VARCHAR" property="orderid" column="orderid"></id>
+        <result javaType="java.lang.String" jdbcType="VARCHAR" property="locationid" column="locationid"></result>
+        <result javaType="java.lang.Integer" jdbcType="INTEGER" property="status" column="status"></result>
+    </resultMap>
+
+    <!--查询某天某个时间段的状态-->
+    <select id="queryForExist" parameterType="TrainingOrder" resultType="TrainingOrder">
+          select `status`,`orderid`  from trainingorder
+          where `coachid`=#{coachid} and `date`=#{date} and `begintime`=#{begintime}
+    </select>
+
+    <!--查询学员当天是否预约-->
+    <select id="queryForTodayExist" resultType="TrainingOrder">
+          select
+        `orderid`  from trainingorder   where `studentid`=#{studentid} and `date`=#{date} and `status`=#{status}
+    </select>
+    <!--查询学员当天预约订单详细信息-->
+    <select id="queryForTodaydetail" resultMap="onedayordermap">
+        select
+        trainingorder.orderid,
+        trainingorder.date,
+        trainingorder.begintime,
+        trainingorder.endtime,
+        trainingorder.status,
+        coach.name,
+        coach.coachcar,
+        course.licensetype,
+        course.coursetype,
+        course.subject
+        from trainingorder
+        inner join coach on trainingorder.coachid=coach.coachid
+        inner join course on trainingorder.coachid=course.coachid
+        and trainingorder.studentid=course.studentid and course.status=1
+        where
+        trainingorder.studentid=#{studentid} and trainingorder.date=#{date} and trainingorder.status in
+        <foreach collection="statusarray" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <resultMap id="onedayordermap" type="TrainingOrder">
+        <id  property="orderid" column="orderid"></id>
+        <result property="date" column="date"></result>
+        <result property="begintime" column="begintime"></result>
+        <result property="endtime" column="endtime"></result>
+        <result property="status" column="status"></result>
+        <association property="course" javaType="Course">
+            <result property="licensetype" column="licensetype"></result>
+            <result property="coursetype" column="coursetype"></result>
+            <result property="subject" column="subject"></result>
+        </association>
+        <association property="coach" javaType="Coach">
+            <result property="name" column="name"></result>
+            <result property="coachcar" column="coachcar"></result>
+        </association>
+    </resultMap>
+
+
+    <!--插入单条数据-->
+    <insert id="insertTrainingOrderOne" parameterType="TrainingOrder">
+        insert  into trainingorder
+      ( `orderid`,
+        `date`,
+        `begintime`,
+        `endtime`,
+        `locationid`,
+        `studentid`,
+        `coachid`,
+        `status`
+        )values (
+            #{orderid},
+            #{date},
+            #{begintime},
+            #{endtime},
+            #{locationid},
+            #{studentid},
+            #{coachid},
+            #{status}
+        )
+    </insert>
+
+    <update id="updateTrainingOrderOne" parameterType="TrainingOrder">
+        update  trainingorder
+        set `studentid` = #{studentid},
+             `status`=#{status}
+        where `orderid`=#{orderid}
+    </update>
+
+</mapper>

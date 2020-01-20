@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>简约车管理员端</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+
+</head>
+
+<body>
+
+<div class="panel-body">
+    <ul id="subjectTab" class="nav nav-tabs">
+        <li class="active" id="tab1" data-total=${subject2}>
+            <a href="#subject2" data-toggle="tab"  >
+                科目二
+            </a>
+
+        </li>
+        <li id="tab2"  data-total=${subject3}>
+            <a href="#subject3" data-toggle="tab" >科目三</a>
+        </li>
+    </ul>
+    <div id="subjectTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="subject2"  data-subject="2">
+            <div id="subject2_list"></div>
+            <p id="page1"></p>
+            <div hidden="hidden" id="subject2page" data-page="1"></div>
+        </div>
+        <div class="tab-pane fade" id="subject3" data-subject="3">
+            <div id="subject3_list"></div>
+            <p id="page2"></p>
+            <div hidden="hidden" id="subject3page" data-page="1"></div>
+    </div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+
+    var twocurrentpage=1;
+    var threecurrentpage=1;
+    $(function(){
+        $("#subject2_list").load("/admin/skilllist?pageNumber=1&category=2");
+        $("#subject3_list").load("/admin/skilllist?pageNumber=1&category=3");
+        //根据类别查出有多少页，返回的是一个数组
+        var toal1 = [[${subject2}]];
+        var toal2 = [[${subject3}]];
+        var options1={
+            bootstrapMajorVersion:1, //版本
+            currentPage:1, //当前页数
+            numberOfPages:5, //最多显示Page页
+            totalPages:Math.floor(toal1/5+1), //所有数据可以显示的页数
+            onPageClicked:function(e,originalEvent,type,page){
+                $("#subject2_list").load("/admin/skilllist?pageNumber="+page+"&category=2");
+                twocurrentpage=page;
+
+            }
+
+        }
+        var options2={
+            bootstrapMajorVersion:1, //版本
+            currentPage:1, //当前页数
+            numberOfPages:5, //最多显示Page页
+            totalPages:Math.floor(toal2/5+1), //所有数据可以显示的页数
+            onPageClicked:function(e,originalEvent,type,page){
+                $("#subject3_list").load("/admin/skilllist?pageNumber="+page+"&category=2");
+                threecurrentpage=page;
+            }
+
+        }
+
+        $("#page1").bootstrapPaginator(options1);
+        $("#page2").bootstrapPaginator(options2);
+
+    })
+
+</script>
+</body>
+
+</html>

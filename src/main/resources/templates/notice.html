@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/mystyle.css}" />
+   <style>
+       .timeline-small {
+           overflow: hidden;
+           margin: 30px auto 0;
+           font-family: 'Open Sans', sans-serif;
+       }
+       .timeline-small-body ul {
+           padding: 1em 0 0 2em;
+           margin: 0;
+           list-style: none;
+           position: relative;
+       }
+       .timeline-small-body ul::before {
+           content: ' ';
+           height: 100%;
+           width: 5px;
+           background-color: #d9d9d9;
+           position: absolute;
+           top: 0;
+           left: 2.2em;
+           z-index: 1;
+       }
+       .timeline-small-body li div {
+           position:relative;
+           display: inline-block;
+           margin: 1em 0;
+           vertical-align: top;
+           z-index: 2;
+       }
+
+       .timeline-small-body .bullet.orange {
+           background-color: salmon;
+           border: 3px solid #EB8B6E;
+       }
+       .timeline-small-body .bullet {
+           width: 1rem;
+           height: 1rem;
+           box-sizing: border-box;
+           border-radius: 50%;
+           background: #fff;
+           z-index: 1;
+           margin-right: 1rem;
+           margin-top: 2rem;
+       }
+
+       .timeline-small-body .date {
+           width: 23%;
+           font-size: 0.75em;
+           padding-top: 0.40rem;
+           padding-right: 2rem;
+       }
+       .timeline-small-body .desc {
+           width: 50%;
+       }
+       .timeline-small-body h3 {
+           font-size: 0.9em;
+           font-weight: 400;
+           margin: 0;
+       }
+       .timeline-small-body h4 {
+           margin: 0;
+           font-size: 0.7em;
+           font-weight: 400;
+           color: #808080;
+       }
+   </style>
+
+</head>
+
+
+<body>
+
+<div class="panel">
+<div class="container-fluid panel-body" style="padding-bottom:0px">
+    <form class="form-horizontal validation-form" id="formAdd" th:action="@{/admin/notice/save}" method="post">
+        <div class="panel panel-default" style="margin-bottom: 0px">
+            <h4 class="panel panel-heading h4font">
+                驾校公告
+                <small></small>
+            </h4>
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">公告标题</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="title" placeholder=""
+                        >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">具体内容</label>
+                    <div class=" col-sm-4">
+                        <textarea class="form-control">
+                    </textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-5 col-sm-1">
+                        <button type="submit" class="btn btn-primary" id="save">发布</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+
+    </form>
+    <div class="timeline-small">
+        <div class="timeline-small-body">
+            <ul>
+                <li>
+                    <div class="bullet orange"></div>
+                    <div class="date">XXXX年XX月XX日</div>
+                    <div class="desc">
+                        <h3>内容段落1</h3>
+                        <h4>内容段落2内容段落2内容段落2内容段落2</h4>
+                    </div>
+                </li>
+                <li>
+                    <div class="bullet orange"></div>
+                    <div class="date">XXXX年XX月XX日</div>
+                    <div class="desc">
+                        <h3>内容段落1</h3>
+                        <h4>内容段落2内容段落2内容段落2内容段落2</h4>
+                    </div>
+                </li>
+                <li>
+                    <div class="bullet orange"></div>
+                    <div class="date">XXXX年XX月XX日</div>
+                    <div class="desc">
+                        <h3>内容段落1</h3>
+                        <h4>内容段落2内容段落2内容段落2内容段落2</h4>
+                    </div>
+                </li>
+                <li>
+                    <div class="bullet orange"></div>
+                    <div class="date">XXXX年XX月XX日</div>
+                    <div class="desc">
+                        <h3>内容段落1</h3>
+                        <h4>内容段落2内容段落2内容段落2内容段落2</h4>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+</body>
+</html>
