@@ -4,14 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cc.dao.StudentMapper">
 
-<sql id="studentSelect">
+    <sql id="studentSelect">
          `studentid`,
          `name`,
          `sex`,
          `age`,
          `phone`,
-         `face`
+         `face`,
+         `userid`
 </sql>
+
     <update id="updatebyStudentId">
         update  student
         <set>
@@ -30,27 +32,35 @@
             <if test="map.face!=null and map.face!=''">
                 `face`=#{map.face},
             </if>
+            <if test="map.enable!=null ">
+                `enable`=#{map.enable},
+            </if>
         </set>
-        where  studentId=#{map.studentId}
+        where   studentId=#{map.studentId}
     </update>
 
+    <update id="enablebyStudentId">
+        update student set `enable`= #{enable}
+        where   studentid in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </update>
 
-    <delete id="deletebyStudentId">
-         delete  from  student where
-         studentid in
-         <foreach collection="list" open="(" separator="," close=")" item="item">
-             #{item}
-         </foreach>
-    </delete>
+    <!--根据studentId批量查询-->
+    <select id="queryByStudentId" resultType="Student">
+        select
+        <include refid="studentSelect"></include>
+        from  student
+        where  `enable`=0 and studentid in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
 
     <select id="querybyUserid" resultType="Student">
         select
-         `studentid`,
-         `name`,
-         `sex`,
-         `age`,
-         `phone`,
-         `face`
+        <include refid="studentSelect"></include>
          from student
         where
         userid=#{userid}
@@ -65,7 +75,7 @@
         <result javaType="java.lang.String" jdbcType="VARCHAR" property="userid" column="userid"></result>
     </resultMap>
 
-
+    <!--分页查询学员列表，参数以map传入-->
     <select id="queryByParams"  resultMap="studentList">
         select
         <include refid="studentSelect"></include>
@@ -77,12 +87,13 @@
             <if test="map.name!=null and map.name!=''">
                 and  name=#{map.name}
             </if>
+            and `enable`=0
         </where>
        limit #{map.currIndex} , #{map.pageSize}
 
 
     </select>
-
+    <!--查询学员总数，参数以map传入-->
     <select id="queryCountByParams"  resultType="java.lang.Integer">
         select
         count(*)
@@ -94,28 +105,8 @@
             <if test="map.name!=null and map.name!=''">
                 and  name=#{map.name}
             </if>
+            and `enable`=0
         </where>
-    </select>
-
-    <select id="queryByMap"  resultMap="studentList" >
-        select
-        <include refid="studentSelect"></include>
-         from student
-        where
-        <choose>
-            <when test="map.keys.size > 0">
-                <foreach collection="map.keys" item="key"
-                         separator="AND">
-                    ${key} = #{map[${key}]}
-                </foreach>
-            </when>
-            <otherwise>
-                1=1
-            </otherwise>
-        </choose>
-
-
-
     </select>
 
     <insert id="studentInsert" parameterType="Student">

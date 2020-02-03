@@ -1,6 +1,7 @@
 package com.cc.controller.api;
 
 import com.cc.common.JsonResult;
+import com.cc.common.RedisDao;
 import com.cc.common.utils.MD5Util;
 import com.cc.common.utils.StringUtil;
 import com.cc.entity.User;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "登录接口")
 @RestController
+@RequestMapping("/api")
 public class LoginController {
     @Autowired
     private UserService userService;
+
 
     @ApiOperation(value="用户登录", notes="用户登录接口")
     @RequestMapping(value = "/login")
@@ -30,6 +33,7 @@ public class LoginController {
         }
             String MDPassWord = MD5Util.getMD5Str(password);
             UserInfoVO result = userService.queryUserForLogin(username, MDPassWord);
+
             if (result != null) {
                     return JsonResult.success("登陆成功", result);
             } else {

@@ -10,6 +10,7 @@
         <result property="coursetype" column="coursetype"></result>
         <result property="licensetype" column="licensetype"></result>
         <result property="subject" column="subject"></result>
+        <result property="studentid" column="studentid"></result>
         <!--映射关系，指定属性与属性的类型-->
         <association property="coach" javaType="Coach">
             <id property="coachid" column="coachid"></id>
@@ -20,9 +21,11 @@
     </resultMap>
 
 
+    <!--根据学员id查询正在进行的课程-->
     <select id="querybyStudentid" resultMap="CourseCoachMap">
     select
       course.courseid,
+      course.studentid,
       course.coursetype,
       course.licensetype,
       course.subject,
@@ -33,7 +36,13 @@
     from course  inner join  coach
     on  course.coachid=coach.coachid
     where
-    course.studentid=#{userid} and course.status=1
+    course.status=2 and
+    course.studentid in
+    <foreach collection="list" item="item" open="("  separator="," close=")">
+        #{item}
+    </foreach>
+
+
 </select>
 
 </mapper>

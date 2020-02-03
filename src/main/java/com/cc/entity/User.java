@@ -21,8 +21,15 @@ public class User {
     //身份 1是学员 2是教练
     @ApiModelProperty(value="身份", name="identity", example="1", required=true)
     private  Integer identity;
+    private  Integer enable;
 
+    public Integer getEnable() {
+        return enable;
+    }
 
+    public void setEnable(Integer enable) {
+        this.enable = enable;
+    }
 
     public String getUserId() {
         return userId;

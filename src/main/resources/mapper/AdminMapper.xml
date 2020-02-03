@@ -10,7 +10,7 @@
          `nickname`
          from admin
         where
-        userid=#{userid}
+        `enable`=0 and userid=#{userid}
     </select>
 
 

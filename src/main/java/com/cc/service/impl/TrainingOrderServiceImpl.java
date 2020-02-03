@@ -65,8 +65,7 @@ public class TrainingOrderServiceImpl implements TrainingOrderService {
         TrainingOrder queryresult;
         queryresult = orderMapper.queryForExist(trainingOrder);
         if (queryresult == null) {
-            SnowflakeIdWorker idWorker = new SnowflakeIdWorker(1, 1);
-            long id=idWorker.nextId();
+            String id=this.createId(trainingOrder);
             trainingOrder.setOrderid(String.valueOf(id));
             trainingOrder.setStatus(Status.hava_order.value());
             orderMapper.insertTrainingOrderOne(trainingOrder);
@@ -75,13 +74,46 @@ public class TrainingOrderServiceImpl implements TrainingOrderService {
             TrainingOrder updateorder = new TrainingOrder();
             updateorder.setOrderid(queryresult.getOrderid());
             updateorder.setStatus(Status.hava_order.value());
-            updateorder.setStudentid(trainingOrder.getStudentid());
+            updateorder.setCourseid(trainingOrder.getCourseid());
             orderMapper.updateTrainingOrderOne(updateorder);
             return true;
         } else {
             return false;
         }
 
+    }
+
+    private  String createId(TrainingOrder trainingOrder){
+        String date= trainingOrder.getDate().toString();
+        String time=trainingOrder.getBegintime().toString();
+        String coachid=trainingOrder.getCoachid();
+        return  date+time+coachid;
+    }
+
+    @Override
+    public Integer queryHistoryCount(String studentid, Date date) {
+        if(StringUtil.isEmpty(studentid)||date==null)
+            return  Integer.valueOf(0);
+        Map<String,Object> param=new HashMap<>();
+        param.put("studentid",studentid);
+        param.put("date",date);
+        param.put("statusarray",HAVEORDER_OR_ABSENCE);
+        Integer count=orderMapper.queryForHistoryCount(param);
+        return count;
+
+    }
+
+    @Override
+    public List<TrainingOrder> queryHistoryOrder(String studentid, Date date, Integer page, Integer pageSize) {
+        Integer currIndex=page>0?(page-1)*pageSize:0;
+        Map<String,Object> param=new HashMap<>();
+        param.put("studentid",studentid);
+        param.put("date",date);
+        param.put("statusarray",HAVEORDER_OR_ABSENCE);
+        param.put("currIndex",currIndex);
+        param.put("pageSize",pageSize);
+        List<TrainingOrder> result=orderMapper.queryHistoryOrder(param);
+        return  result;
     }
 
     @Override
@@ -93,11 +125,11 @@ public class TrainingOrderServiceImpl implements TrainingOrderService {
     }
 
     @Override
-    public TrainingOrder queryStudentToday(String studentid, Date date) {
+    public TrainingOrder queryStudentToday(String courseid, Date date) {
         //查询这个学生当前有没有预约
-        if(StringUtil.isEmpty(studentid)||date==null)
+        if(StringUtil.isEmpty(courseid)||date==null)
             return  null;
-        TrainingOrder order=orderMapper.queryForTodayExist(studentid,date,Status.hava_order.value());
+        TrainingOrder order=orderMapper.queryForTodayExist(courseid,date,Status.hava_order.value());
         return order;
     }
 

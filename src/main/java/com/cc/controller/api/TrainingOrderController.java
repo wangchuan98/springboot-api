@@ -6,6 +6,7 @@ import com.cc.common.utils.StringUtil;
 import com.cc.entity.TrainingOrder;
 import com.cc.service.TrainingOrderService;
 import com.cc.vo.OrderStatus;
+import com.cc.vo.PageListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,14 @@ import java.util.List;
  */
 @RestController
 @Api(tags = "预约接口")
+@RequestMapping("/api")
 public class TrainingOrderController {
     //2019-12-20
     @Autowired
     private TrainingOrderService orderService;
-    private  final  String[] ORDER_CANNULL={"orderid","status","coach","student","course"};
+    private  final  Integer PAGESIZE=5;
+    private  final  String[] ORDER_CANNULL={"orderid","status","studentid","coachid","coach","student","course"};
+
     @ApiOperation(value="预约状态查询", notes="预约状态查询接口")
     @RequestMapping(value = "/queryforstatus")
     private JsonResult queryforstatus(@RequestParam("coachid")String coachid, @RequestParam("date")Date date) throws Exception  {
@@ -50,7 +54,7 @@ public class TrainingOrderController {
         if (ordetIsEmpty(trainingOrder)) {
             return JsonResult.error("信息存在空值");
         }
-        TrainingOrder todayorder=orderService.queryStudentToday(trainingOrder.getStudentid(),trainingOrder.getDate());
+        TrainingOrder todayorder=orderService.queryStudentToday(trainingOrder.getCourseid(),trainingOrder.getDate());
         if(todayorder!=null)
             return  JsonResult.success("今日已预约",null);
         boolean flag=orderService.Order(trainingOrder);
@@ -89,6 +93,32 @@ public class TrainingOrderController {
         }
     }
 
+
+    @ApiOperation(value="历史预约信息", notes="历史预约信息接口")
+    @RequestMapping(value = "/orderhistory")
+    private JsonResult orderhistory(@RequestParam("studentid")String studentid, @RequestParam("date")Date date,
+    @RequestParam("page")Integer page) throws Exception {
+        PageListVO<TrainingOrder> pageListVO=new PageListVO<>();
+        //校验空值
+        if ( StringUtil.isEmpty(studentid) || date == null) {
+            return JsonResult.error("信息存在空值");
+        }
+        if(page==null){
+            page=Integer.valueOf(1);
+        }
+        //加载第一页数据时，查询下历史订单的总数
+        if(page==1){
+           Integer total=orderService.queryHistoryCount(studentid,date);
+           if(total==0){
+               return JsonResult.success("暂无历史订单", null);
+           }
+            pageListVO.setTotalPage(total/5);
+        }
+        //查询page页的数据返回
+        List<TrainingOrder> resultlist=orderService.queryHistoryOrder(studentid,date,page,PAGESIZE);
+        pageListVO.setRows(resultlist);
+        return JsonResult.success("查询成功",pageListVO);
+    }
     private  boolean ordetIsEmpty( TrainingOrder trainingOrder){
         //查看除了status 和id之外的属性是否为空
         boolean flag=false;

@@ -65,7 +65,7 @@ html,body{
     color: #000;
 }
 
-.form-login .form-item i {
+.form-login .form-item .icon i {
     position: absolute;
     top: 12px;
     left: 60px;

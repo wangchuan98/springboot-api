@@ -9,8 +9,8 @@ import java.util.Map;
 
 public interface StudentService {
 
-     Student querybyUserid(String userid);
-     List<Student> queryByMap(Map map);
+     String updatebyUserId(StudentVO studentVO,String userId);
+     Student queryByStudentId(String studentId);
      List<Student> queryByParam(String name, String studentId, PageInfo pageInfo);
      Integer queryCountByParam(String name, String studentId);
      String insertStudent(StudentVO studentVO,String userId);

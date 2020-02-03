@@ -4,6 +4,7 @@ CREATE TABLE `users`(
   `username` VARCHAR(20) NOT NULL COMMENT '用户名',
   `password` VARCHAR(64) NOT NULL COMMENT '密码',
   `identity` INT(1) NOT NULL COMMENT '身份',
+   `enable`  INT(1) default 0 COMMENT  '启用状态',
   PRIMARY KEY (`userid`),
   UNIQUE KEY(`username`)
 ) ENGINE=INNODB  DEFAULT CHARSET=utf8
@@ -13,6 +14,7 @@ CREATE TABLE `admin`(
   `adminid` VARCHAR(20) NOT NULL,
   `nickname` varchar(50)  NOT NULL COMMENT '名称',
   `userid`    VARCHAR(20)NOT NULL UNIQUE ,
+  `enable`  INT(1) default 0 COMMENT  '启用状态',
    FOREIGN KEY(userid) REFERENCES users(userid)，
   PRIMARY KEY (`adminid`)
 )  ENGINE=INNODB  DEFAULT CHARSET=utf8;
@@ -25,6 +27,7 @@ CREATE TABLE `student`(
 `age`       INT(3) NOT NULL COMMENT '年龄',
 `phone`     VARCHAR(15) NOT NULL COMMENT '手机号',
 `face`      VARCHAR(50)    COMMENT '头像地址',
+`enable`  INT(1) default 0 COMMENT  '启用状态',
 `userid`    VARCHAR(20)NOT NULL UNIQUE ,
  PRIMARY KEY(studentid),
  FOREIGN KEY(userid) REFERENCES users(userid)
@@ -40,6 +43,7 @@ CREATE TABLE `coach`(
 `face`      VARCHAR(50)    COMMENT '头像地址',
 `coachage`  INT(3) NOT NULL  COMMENT '教龄',
 `coachcar`  VARCHAR(10)  NOT NULL COMMENT '教练车',
+`enable`  INT(1) default 0 COMMENT  '启用状态',
 `userid`    VARCHAR(20)NOT NULL UNIQUE ,
  PRIMARY KEY(coachid),
  FOREIGN KEY(userid) REFERENCES users(userid)
@@ -58,21 +62,18 @@ CREATE TABLE `course`(
  FOREIGN KEY(coachid) REFERENCES coach(coachid)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8
 
+
 CREATE TABLE `trainingorder`(
-`orderid` VARCHAR(20) NOT NULL,
+`orderid` VARCHAR(30) NOT NULL,
 `date`      DATE  NOT NULL  COMMENT '订单日期',
 `begintime` TIME  NOT NULL  COMMENT '开始时间',
 `endtime`   TIME  NOT NULL COMMENT '结束时间',
 `locationid`   VARCHAR(5) NOT NULL COMMENT '坐标',
-`studentid` VARCHAR(20) ,
-`coachid`   VARCHAR(20) NOT NULL,
+`courseid` VARCHAR(20) ,
 `status`    INT(1) NOT NULL COMMENT '状态:1未预约2已预约3调休',
  PRIMARY KEY(orderid),
- FOREIGN KEY(studentid) REFERENCES student(studentid),
- FOREIGN KEY(coachid) REFERENCES coach(coachid)
+ FOREIGN KEY(courseid) REFERENCES course(courseid)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8
-
-CREATE UNIQUE INDEX `order` ON trainingorder(`date`,`coachid`,`locationid`);
 
 
 

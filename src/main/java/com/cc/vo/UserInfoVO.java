@@ -15,6 +15,17 @@ public class UserInfoVO
     private  String studentId;
     private  String coachId;
     private  String  nickname;
+    private  String  sessionkey;
+
+    public String getSessionkey() {
+        return sessionkey;
+    }
+
+    public void setSessionkey(String sessionkey) {
+        this.sessionkey = sessionkey;
+    }
+
+
 
     public String getNickname() {
         return nickname;

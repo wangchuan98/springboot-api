@@ -3,9 +3,11 @@ package com.cc.controller;
 import com.cc.common.JsonResult;
 import com.cc.common.utils.ObjectUtil;
 import com.cc.common.utils.StringUtil;
+import com.cc.entity.Course;
 import com.cc.entity.PageInfo;
 import com.cc.entity.Student;
 import com.cc.entity.User;
+import com.cc.service.CourceService;
 import com.cc.service.StudentService;
 import com.cc.service.UserService;
 import com.cc.vo.StudentVO;
@@ -38,6 +40,8 @@ public class AdminStudentController {
     UserService userService;
     @Autowired
     StudentService studentService;
+    @Autowired
+    CourceService courceService;
 
 
     //非空检查时，可以为空的参数
@@ -55,9 +59,22 @@ public class AdminStudentController {
          if(validate!=null)
              return  validate;
          //查询是否有相同的用户名
-        if(userService.isExsitUsername(vo.getUsername()))
-            return  JsonResult.error("用户名已存在");
-        String userId=userService.insertUser(vo.getUsername(),vo.getPassword(),User.ADMIN);
+         User result=userService.isExsitUsername(vo.getUsername());
+        if(result!=null){
+            //如果启用状态的，返回用户名已存在
+            if(result.getEnable()==0)
+                return  JsonResult.error("用户名已存在");
+            else
+            {
+                //如果是注销的，就update原先的数据
+                userService.updateByUserId(result.getUserId(),vo.getPassword());
+                String studentId=studentService.updatebyUserId(vo,result.getUserId());
+                return   JsonResult.success("学员添加成功",studentId);
+            }
+        }
+
+
+        String userId=userService.insertUser(vo.getUsername(),vo.getPassword(),User.STUDENT);
         String studentId=studentService.insertStudent(vo,userId);
         return   JsonResult.success("学员添加成功",studentId);
     }
@@ -95,6 +112,17 @@ public class AdminStudentController {
             {
                 return  JsonResult.error("请求参数为空");
             }
+            //先查询是否有进行的课程
+              List<Course> coutseList=courceService.queryForSid(idList);
+            if(coutseList.size()>0){
+                String msg="学员：";
+                for(Course item:coutseList){
+                    msg=msg+item.getStudentid()+" ";
+                }
+                msg=msg+"仍存在进行的课程";
+                return  JsonResult.error(msg);
+            }
+            //将启用标志改为失效，也就是1
             studentService.deletebyStudentId(idList);
             return  JsonResult.success("删除成功",null);
 
@@ -155,17 +183,13 @@ public class AdminStudentController {
 
     private  void setStudentInfo(HttpServletRequest request){
         String studentId=request.getParameter("studentId");
-        HashMap<String,Object> map=new HashMap<>();
-        map.put("studentid",studentId);
-        List<Student> list=studentService.queryByMap(map);
-        if(list.size()>0)
-        {
-            Student student=list.get(0);
-            request.setAttribute("studentId",student.getStudentId());
-            request.setAttribute("name",student.getName());
-            request.setAttribute("sex",student.getSex());
-            request.setAttribute("age",student.getAge());
-            request.setAttribute("phone",student.getPhone());
+        Student student=studentService.queryByStudentId(studentId);
+        if(student!=null) {
+            request.setAttribute("studentId", student.getStudentId());
+            request.setAttribute("name", student.getName());
+            request.setAttribute("sex", student.getSex());
+            request.setAttribute("age", student.getAge());
+            request.setAttribute("phone", student.getPhone());
         }
     }
 

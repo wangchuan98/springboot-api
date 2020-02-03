@@ -6,6 +6,9 @@ import com.cc.service.CourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @program: springboot-api
  * @description:
@@ -17,8 +20,8 @@ public class CourceServiceImpl implements CourceService {
     @Autowired
     private CourseMapper courseMapper;
     @Override
-    public Course queryForSid(String studentId) {
-        Course course=courseMapper.querybyStudentid(studentId);
-        return course;
+    public List<Course> queryForSid( List<String> ids) {
+        List<Course> courseList=courseMapper.querybyStudentid(ids);
+        return courseList;
     }
 }

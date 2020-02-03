@@ -46,6 +46,8 @@ public class SubjectSkillServiceImpl implements SubjectSkillService {
         return list;
     }
 
+
+
     @Override
     public void deletebyId(String id) {
             subjectSkillMapper.deletebyId(id);

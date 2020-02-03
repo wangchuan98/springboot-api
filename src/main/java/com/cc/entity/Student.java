@@ -35,6 +35,16 @@ public class Student {
     //userid
     private  String userid;
 
+    private  Integer enable;
+
+    public Integer getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Integer enable) {
+        this.enable = enable;
+    }
+
     public String getStudentId() {
         return studentId;
     }

@@ -60,7 +60,12 @@ public class JsonResult {
         return  new JsonResult(msg,null,555);
     }
 
-
+    /*
+     未登陆或者账号被挤出时使用
+     */
+    public static JsonResult errorSessionMsg(String msg) {
+        return new JsonResult(msg, null, 502);
+    }
     public String getMsg() {
         return msg;
     }

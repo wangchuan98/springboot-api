@@ -1,6 +1,7 @@
 package com.cc;
 
 import com.cc.interceptor.AdminLoginInterceptor;
+import com.cc.interceptor.ApiInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -20,10 +21,17 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
     @Autowired
     private AdminLoginInterceptor adminLoginInterceptor;
+    @Autowired
+    private  ApiInterceptor apiInterceptor;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/")
                 .addResourceLocations("file:D:/order/");
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
 
@@ -34,7 +42,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         // addPathPatterns 用于添加拦截规则，/**表示拦截所有请求
         // excludePathPatterns 用户排除拦截
         registry.addInterceptor(adminLoginInterceptor).addPathPatterns("/admin/**")
-                .excludePathPatterns("/admin/login");
+                .excludePathPatterns("/admin/login").excludePathPatterns("/admin/relogin");
+//        registry.addInterceptor(apiInterceptor).addPathPatterns("/api/**")
+//                .excludePathPatterns("/api/login");
         super.addInterceptors(registry);
     }
 

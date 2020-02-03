@@ -13,9 +13,10 @@
          `date`
          from trainingorder
          where
-        `coachid`=#{coachid} and
         `date`<![CDATA[ >= ]]>#{begindate}
-        and `date`<![CDATA[ <= ]]>#{enddate}
+        and `date`<![CDATA[ <= ]]>#{enddate} and
+        courseid IN(SELECT courseid FROM course WHERE
+        coachid=#{coachid} AND `status`=2)
     </select>
     <resultMap id="order" type="TrainingOrder">
         <id javaType="java.lang.String" jdbcType="VARCHAR" property="orderid" column="orderid"></id>
@@ -23,19 +24,52 @@
         <result javaType="java.lang.Integer" jdbcType="INTEGER" property="status" column="status"></result>
     </resultMap>
 
-    <!--查询某天某个时间段的状态-->
-    <select id="queryForExist" parameterType="TrainingOrder" resultType="TrainingOrder">
-          select `status`,`orderid`  from trainingorder
-          where `coachid`=#{coachid} and `date`=#{date} and `begintime`=#{begintime}
-    </select>
-
     <!--查询学员当天是否预约-->
     <select id="queryForTodayExist" resultType="TrainingOrder">
           select
-        `orderid`  from trainingorder   where `studentid`=#{studentid} and `date`=#{date} and `status`=#{status}
+        `orderid`  from trainingorder   where
+         `courseid`=#{courseid}
+          and `date`=#{date} and `status`=#{status}
     </select>
+
+    <!--查询某天某个时间段的预约状态-->
+    <select id="queryForExist" parameterType="TrainingOrder" resultType="TrainingOrder">
+          select `status`,`orderid`  from trainingorder
+          where  courseid IN(SELECT courseid FROM course WHERE
+        coachid=#{coachid} AND `status`=2) and `date`=#{date} and `begintime`=#{begintime}
+    </select>
+
+    <!--插入单条数据-->
+    <insert id="insertTrainingOrderOne" parameterType="TrainingOrder">
+        insert  into trainingorder
+      ( `orderid`,
+        `date`,
+        `begintime`,
+        `endtime`,
+        `locationid`,
+        `courseid`,
+        `status`
+        )values (
+            #{orderid},
+            #{date},
+            #{begintime},
+            #{endtime},
+            #{locationid},
+            #{courseid},
+            #{status}
+        )
+    </insert>
+
+    <update id="updateTrainingOrderOne" parameterType="TrainingOrder">
+        update  trainingorder
+        set `courseid` = #{courseid},
+             `status`=#{status}
+        where `orderid`=#{orderid}
+    </update>
+
+
     <!--查询学员当天预约订单详细信息-->
-    <select id="queryForTodaydetail" resultMap="onedayordermap">
+    <select id="queryForTodaydetail" resultMap="ordermap">
         select
         trainingorder.orderid,
         trainingorder.date,
@@ -48,16 +82,50 @@
         course.coursetype,
         course.subject
         from trainingorder
-        inner join coach on trainingorder.coachid=coach.coachid
-        inner join course on trainingorder.coachid=course.coachid
-        and trainingorder.studentid=course.studentid and course.status=1
+        INNER JOIN course ON trainingorder.courseid=course.courseid
+        INNER JOIN coach ON course.coachid=coach.coachid
         where
-        trainingorder.studentid=#{studentid} and trainingorder.date=#{date} and trainingorder.status in
+        course.studentid=#{studentid} and course.status=2
+        and trainingorder.date=#{date} and trainingorder.status in
         <foreach collection="statusarray" index="index" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
     </select>
-    <resultMap id="onedayordermap" type="TrainingOrder">
+
+    <!--查询学员历史订单数量-->
+    <select id="queryForHistoryCount" resultType="java.lang.Integer">
+       select count(*)  from
+        trainingorder trainingorder
+        where
+        trainingorder.courseid in(select courseid from course where studentid=#{studentid} and status=2)
+        and trainingorder.date<![CDATA[ < ]]>#{map.date} and trainingorder.status in
+        <foreach collection="map.statusarray" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="queryHistoryOrder"  resultMap="ordermap" >
+        select
+        trainingorder.orderid,
+        trainingorder.date,
+        trainingorder.begintime,
+        trainingorder.endtime,
+        trainingorder.status,
+        coach.name,
+        course.coursetype,
+        course.subject
+        from trainingorder
+        INNER JOIN course ON trainingorder.courseid=course.courseid
+        INNER JOIN coach ON course.coachid=coach.coachid
+        where
+        course.studentid=#{studentid} and course.status=2
+        and trainingorder.date<![CDATA[ < ]]>#{map.date} and trainingorder.status in
+        <foreach collection="map.statusarray" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        limit #{map.currIndex} , #{map.pageSize}
+    </select>
+
+    <resultMap id="ordermap" type="TrainingOrder">
         <id  property="orderid" column="orderid"></id>
         <result property="date" column="date"></result>
         <result property="begintime" column="begintime"></result>
@@ -67,42 +135,15 @@
             <result property="licensetype" column="licensetype"></result>
             <result property="coursetype" column="coursetype"></result>
             <result property="subject" column="subject"></result>
+            <association property="coach" javaType="Coach">
+                <result property="name" column="name"></result>
+                <result property="coachcar" column="coachcar"></result>
+            </association>
         </association>
-        <association property="coach" javaType="Coach">
-            <result property="name" column="name"></result>
-            <result property="coachcar" column="coachcar"></result>
-        </association>
+
     </resultMap>
 
 
-    <!--插入单条数据-->
-    <insert id="insertTrainingOrderOne" parameterType="TrainingOrder">
-        insert  into trainingorder
-      ( `orderid`,
-        `date`,
-        `begintime`,
-        `endtime`,
-        `locationid`,
-        `studentid`,
-        `coachid`,
-        `status`
-        )values (
-            #{orderid},
-            #{date},
-            #{begintime},
-            #{endtime},
-            #{locationid},
-            #{studentid},
-            #{coachid},
-            #{status}
-        )
-    </insert>
 
-    <update id="updateTrainingOrderOne" parameterType="TrainingOrder">
-        update  trainingorder
-        set `studentid` = #{studentid},
-             `status`=#{status}
-        where `orderid`=#{orderid}
-    </update>
 
 </mapper>

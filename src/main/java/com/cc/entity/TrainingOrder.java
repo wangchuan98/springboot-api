@@ -1,6 +1,7 @@
 package com.cc.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -20,6 +21,7 @@ public class TrainingOrder {
     private  String orderid;
     //订单日期
     @ApiModelProperty(value="订单日期", name="date", example="2019-12-22", required=true)
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     private  Date date;
     //开始时间
     @ApiModelProperty(value="开始时间", name="begintime", example="8:00:00", required=true)
@@ -27,12 +29,6 @@ public class TrainingOrder {
     //结束时间
     @ApiModelProperty(value="结束时间", name="endtime", example="9:00:00", required=true)
     private  Time endtime;
-    //学员id
-    @ApiModelProperty(value="学员id", name="studentid", example="s002", required=true)
-    private  String studentid;
-    //教练id
-    @ApiModelProperty(value="教练id", name="coachid", example="c003", required=true)
-    private  String coachid;
     //坐标
     @ApiModelProperty(value="坐标", name="locationid", example="0", required=true)
     private  String locationid;
@@ -40,27 +36,30 @@ public class TrainingOrder {
     @ApiModelProperty(hidden=true)
     private  Integer status;
 
-    private  Coach coach;
+    private  String courseid;
 
-    private  Student student;
+
 
     private  Course course;
 
+
+    //学员id
+    @ApiModelProperty(value="学员id", name="studentid", example="s002", required=true)
+    private  String studentid;
+    //教练id
+    @ApiModelProperty(value="教练id", name="coachid", example="c003", required=true)
+    private  String coachid;
+
+
+
     //Getter和Setter方法
-    public Coach getCoach() {
-        return coach;
+
+    public String getCourseid() {
+        return courseid;
     }
 
-    public void setCoach(Coach coach) {
-        this.coach = coach;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setCourseid(String courseid) {
+        this.courseid = courseid;
     }
 
     public Course getCourse() {

@@ -20,6 +20,8 @@ public class RedisDao {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    private  final  String  USER_SESSION="session_userId:";
+
     public  Long incr(String key, Date date ) {
         RedisAtomicLong entityIdCounter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
         Long increment = entityIdCounter.getAndIncrement();
@@ -27,5 +29,16 @@ public class RedisDao {
             entityIdCounter.expireAt(date);
         }
         return increment;
+    }
+
+    public  String getSessionKey(String userId){
+        String key=USER_SESSION+userId;
+        Object value=redisTemplate.opsForValue().get(key);
+        return  value==null?null:String.valueOf(value);
+    }
+
+    public  void setSessionKey(String userId,String session_key){
+        String key=USER_SESSION+userId;
+        redisTemplate.opsForValue().set(key,session_key);
     }
 }

@@ -17,6 +17,11 @@
         #{identity}
         )
     </insert>
+    <update id="updateByUserId"  parameterType="User">
+        update  users
+        set `enable`=#{enable},`identity`=#{identity}, `password`= #{passWord}
+        where  `userid`=#{userId}
+    </update>
 
     <select id="queryUserForLogin" resultType="User">
         select
@@ -26,14 +31,23 @@
          `identity`
          from users
         where
-        username=#{username} and password=#{password}
+         `enable`=0 and username=#{username} and password=#{password}
     </select>
 
-    <select id="isExsitUserName"  resultType="String">
+    <select id="isExsitUserName"  resultType="User">
         select
-         `userid`
+         `userid`,
+         `identity`,
+         `enable`
          from users
          where
          username=#{username}
     </select>
+    <update id="enablebyUserId">
+        update users set `enable`= #{enable}
+        where   userid in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </update>
 </mapper>

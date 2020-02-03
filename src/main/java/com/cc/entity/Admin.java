@@ -10,6 +10,15 @@ public class Admin {
     private  String adminid;
     private  String nickname;
     private  String userid;
+    private  Integer enable;
+
+    public Integer getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Integer enable) {
+        this.enable = enable;
+    }
 
     public String getAdminid() {
         return adminid;
