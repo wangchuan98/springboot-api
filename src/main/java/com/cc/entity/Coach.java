@@ -9,7 +9,7 @@ package com.cc.entity;
 public class Coach {
 
 
-    private  String coachid;
+    private  String coachId;
     private  String name;
     private  Integer sex;
     private  Integer age;
@@ -19,6 +19,27 @@ public class Coach {
     private  String coachcar;
     private  String userid;
     private  Integer enable;
+    private  String teachtype;
+    private  User user;
+    //工作照片地址前缀
+    public  static  final  String PHOTO_PREFIX="http://localhost:8080/workphoto/";
+    public  static  final  String PHOTO_SUFFIX=".jpg";
+    //工作照片地址后缀
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getTeachtype() {
+        return teachtype;
+    }
+
+    public void setTeachtype(String teachtype) {
+        this.teachtype = teachtype;
+    }
 
     public Integer getEnable() {
         return enable;
@@ -36,12 +57,12 @@ public class Coach {
         this.name = name;
     }
 
-    public String getCoachid() {
-        return coachid;
+    public String getCoachId() {
+        return coachId;
     }
 
-    public void setCoachid(String coachid) {
-        this.coachid = coachid;
+    public void setCoachId(String coachid) {
+        this.coachId = coachid;
     }
 
     public Integer getSex() {

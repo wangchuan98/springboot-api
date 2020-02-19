@@ -43,8 +43,8 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         // excludePathPatterns 用户排除拦截
         registry.addInterceptor(adminLoginInterceptor).addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/login").excludePathPatterns("/admin/relogin");
-//        registry.addInterceptor(apiInterceptor).addPathPatterns("/api/**")
-//                .excludePathPatterns("/api/login");
+        registry.addInterceptor(apiInterceptor).addPathPatterns("/api/**")
+                .excludePathPatterns("/api/login");
         super.addInterceptors(registry);
     }
 

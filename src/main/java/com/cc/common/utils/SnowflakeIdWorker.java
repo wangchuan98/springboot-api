@@ -1,6 +1,4 @@
-package com.cc.common;
-
-import org.springframework.stereotype.Component;
+package com.cc.common.utils;
 
 /**
  * Twitter_Snowflake<br>

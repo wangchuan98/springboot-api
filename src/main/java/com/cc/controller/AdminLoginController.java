@@ -1,7 +1,6 @@
 package com.cc.controller;
 
 import com.cc.common.RedisDao;
-import com.cc.common.SnowflakeIdWorker;
 import com.cc.common.utils.MD5Util;
 import com.cc.common.utils.StringUtil;
 import com.cc.service.UserService;
@@ -57,7 +56,7 @@ public class AdminLoginController {
 
         //校验密码
         String MDPassWord = MD5Util.getMD5Str(passWord);
-        UserInfoVO result = userService.queryUserForLogin(userName, MDPassWord);
+        UserInfoVO result = userService.queryUserForLogin(userName, MDPassWord,null);
         if (result != null) {
             //将用户添加到sesion中
             session.setAttribute("userId", result.getAdminId());
@@ -77,21 +76,6 @@ public class AdminLoginController {
         return  "home.html";
     }
 
-    @RequestMapping(value = "/addstudent")
-    public String addstudent(HttpServletRequest request){
-        return  "addstudent";
-    }
-    @RequestMapping(value = "/welcome")
-    public String welcome(HttpServletRequest request){
-        return  "welcome";
-    }
 
-    @RequestMapping(value = "/relogin")
-    public String relogin(HttpServletRequest request){
-        return  "relogin";
-    }
 
-    private void setSession(UserInfoVO result){
-
-    }
 }

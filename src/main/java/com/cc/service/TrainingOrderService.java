@@ -10,12 +10,21 @@ import java.util.Map;
 
 
 public interface TrainingOrderService {
-    List<List<OrderStatus>> queryForStutas(String coachid, Date date);
+    List<List<OrderStatus>> queryForStatus(Integer num,String coachid, Date date);
     boolean Order(TrainingOrder trainingOrder);
     Integer queryHistoryCount(String studentid,Date date);
     List<TrainingOrder> queryHistoryOrder(String studentid,Date date,Integer page,Integer pageSize);
+    //取消预约
     void cancelOrder(String orderid);
+    //查询这个学员当天是否已经预约
     TrainingOrder queryStudentToday(String courseid,Date date);
+    //查询学员的当天的预约详情
     TrainingOrder queryTodayDetail(String studentid,Date date);
+   // 查询教练某日的订单
+    List<TrainingOrder> queryOnedayForCoach(String coachId,Date date,Integer orderstatus);
+    //教练调休
+    void  insertHoliday(List<TrainingOrder> orderList);
+    //取消调休
+    void  cancelHoliday(List<String> ids);
 
 }

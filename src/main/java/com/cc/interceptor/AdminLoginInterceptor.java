@@ -27,6 +27,9 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
 
         String requestUrl = request.getRequestURI();
         System.out.println("进入拦截器："+requestUrl);
+        if(1==1){
+            return  true;
+        }
         Object userId=request.getSession().getAttribute("userId");
         Object session_keyObj=request.getSession().getAttribute("session_key");
         if(null == userId||null ==session_keyObj){

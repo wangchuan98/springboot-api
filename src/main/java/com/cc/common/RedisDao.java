@@ -41,4 +41,9 @@ public class RedisDao {
         String key=USER_SESSION+userId;
         redisTemplate.opsForValue().set(key,session_key);
     }
+    public  void del(String key){
+        redisTemplate.delete(key);
+    }
+
+
 }

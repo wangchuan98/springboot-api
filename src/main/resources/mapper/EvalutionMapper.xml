@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.dao.EvaluationMapper">
+
+    <resultMap id="evaluationMap" type="Evaluation">
+        <id property="evaluationId" column="evaluationid"/>
+        <result property="date" column="date"></result>
+        <result property="content" column="content"></result>
+        <!--映射关系，指定属性与属性的类型-->
+        <association property="student" javaType="Student">
+            <id property="studentId" column="studentid"></id>
+            <result property="name" column="name"></result>
+            <result property="face" column="face"></result>
+        </association>
+    </resultMap>
+    <select id="queryByCoachId" resultMap="evaluationMap">
+        select
+        evaluation.evaluationid,
+        evaluation.date,
+        evaluation.content,
+        evaluation.studentid,
+        student.name,
+        student.face
+        from  evaluation evaluation
+        inner join  student student on student.studentid=evaluation.studentid
+        where evaluation.coachid=#{map.coachId} order by `date` DESC  limit #{map.currIndex} , #{map.pageSize}
+    </select>
+
+    <insert id="insert" parameterType="Evaluation">
+         insert  into  evaluation (`evaluationid`, `coachid`, `studentid`,`content`,`date`)
+         values (#{evaluationId},#{coachId},#{studentId},#{content},#{date,jdbcType=TIMESTAMP})
+    </insert>
+
+
+</mapper>

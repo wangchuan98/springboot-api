@@ -1,16 +1,22 @@
 package com.cc.service.impl;
 
+import com.cc.common.enums.Status;
 import com.cc.common.exception.StudentDeleteException;
 import com.cc.common.utils.FlowCodeUtil;
+import com.cc.dao.CourseMapper;
 import com.cc.dao.StudentMapper;
 import com.cc.dao.UserMapper;
+import com.cc.entity.Coach;
+import com.cc.entity.Course;
 import com.cc.entity.PageInfo;
 import com.cc.entity.Student;
 import com.cc.service.StudentService;
+import com.cc.vo.CoachVO;
 import com.cc.vo.StudentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +32,8 @@ import java.util.Map;
 public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
+    private  CourseMapper courseMapper;
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -58,10 +66,32 @@ public class StudentServiceImpl implements StudentService {
         List<String> ids=new ArrayList<>();
         ids.add(studentId);
         List<Student> list = studentMapper.queryByStudentId(ids);
-        if(list.size()>0)
+        if(list!=null&&list.size()>0)
             return list.get(0);
         else
             return null;
+    }
+
+    @Override
+    public  List<CoachVO> queryMyCoach(String studentId) {
+        List<String> ids=new ArrayList<>();
+        ids.add(studentId);
+        List<Course> courseList=courseMapper.queryByStudentId(ids);
+        List<CoachVO> coachVOList=new ArrayList<>();
+        for(Course course:courseList) {
+            Coach coach = course.getCoach();
+            CoachVO coachVO = new CoachVO();
+            coachVO.setCoachId(coach.getCoachId());
+            coachVO.setName(coach.getName());
+            coachVO.setCoachcar(coach.getCoachcar());
+            coachVO.setFace(coach.getFace());
+            coachVO.setTel(coach.getPhone());
+            coachVO.setAge(coach.getAge());
+            coachVO.setTeachtype(coach.getTeachtype());
+            coachVO.setWorkphoto(Coach.PHOTO_PREFIX+coach.getCoachId()+Coach.PHOTO_SUFFIX);
+            coachVOList.add(coachVO);
+        }
+        return  coachVOList;
     }
 
     @Override
@@ -139,4 +169,6 @@ public class StudentServiceImpl implements StudentService {
 //        if(idList.size()!=count)
 //        StudentDeleteException.fail("删除失败");
 //    }
+
+
 }

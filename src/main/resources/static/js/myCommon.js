@@ -16,6 +16,26 @@ $.fn.serializeObject = function() {
     return serializeObj;
 };
 
+
+$.fn.serializeObject = function() {
+    var serializeObj = {};
+    var array = this.serializeArray();
+    var str = this.serialize();
+    $(array).each(function() {
+        if(serializeObj[this.name]) {
+            if($.isArray(serializeObj[this.name])) {
+                serializeObj[this.name].push(this.value);
+            }else{
+                serializeObj[this.name] = [serializeObj[this.name], this.value];
+            }
+        }else{
+            serializeObj[this.name] = this.value;
+        }
+    });
+    return serializeObj;
+};
+
+
 function getUrlParams(name) { // 不传name返回所有值，否则返回对应值
     var url = window.location.search;
     if (url.indexOf('?') == 1) { return false; }

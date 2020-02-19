@@ -33,7 +33,13 @@
         where
          `enable`=0 and username=#{username} and password=#{password}
     </select>
-
+    <select id="queryByUserId" resultType="User">
+        select
+        username,
+        password
+        from Users
+        where userid=#{userId}
+    </select>
     <select id="isExsitUserName"  resultType="User">
         select
          `userid`,

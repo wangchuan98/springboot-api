@@ -33,7 +33,6 @@ CREATE TABLE `student`(
  FOREIGN KEY(userid) REFERENCES users(userid)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8
 
-
 CREATE TABLE `coach`(
 `coachid` VARCHAR(20) NOT NULL,
 `name`      VARCHAR(20)  NOT NULL COMMENT '姓名',
@@ -41,9 +40,10 @@ CREATE TABLE `coach`(
 `age`       INT(3) NOT NULL COMMENT '年龄',
 `phone`     VARCHAR(15) NOT NULL COMMENT '手机号',
 `face`      VARCHAR(50)    COMMENT '头像地址',
+`teachtype`   VARCHAR(6) NOT NULL COMMENT '教学类型',
 `coachage`  INT(3) NOT NULL  COMMENT '教龄',
 `coachcar`  VARCHAR(10)  NOT NULL COMMENT '教练车',
-`enable`  INT(1) default 0 COMMENT  '启用状态',
+`enable`  INT(1) DEFAULT 0 COMMENT  '启用状态',
 `userid`    VARCHAR(20)NOT NULL UNIQUE ,
  PRIMARY KEY(coachid),
  FOREIGN KEY(userid) REFERENCES users(userid)
@@ -51,12 +51,12 @@ CREATE TABLE `coach`(
 
 CREATE TABLE `course`(
 `courseid` VARCHAR(20)  NOT NULL,
-`studentid` VARCHAR(20) NOT NULL,
 `coachid`   VARCHAR(20) NOT NULL,
+`studentid` VARCHAR(20),
 `status`    INT(1) NOT NULL COMMENT '状态:1已通过2未通过3作废',
-`licensetype`   VARCHAR(2) NOT NULL COMMENT  '驾照类型',
+`licensetype`   VARCHAR(2)  COMMENT  '驾照类型',
 `coursetype`    VARCHAR(10) NOT NULL COMMENT '课程类型',
-`subject`   VARCHAR(10) NOT  NULL COMMENT '科目',
+`subject`   VARCHAR(10)  COMMENT '科目',
  PRIMARY KEY(courseid),
  FOREIGN KEY(studentid) REFERENCES student(studentid),
  FOREIGN KEY(coachid) REFERENCES coach(coachid)
@@ -75,6 +75,26 @@ CREATE TABLE `trainingorder`(
  FOREIGN KEY(courseid) REFERENCES course(courseid)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8
 
+CREATE TABLE `evaluation`(
+`evaluationid` VARCHAR(20) NOT NULL,
+`date`      DATE  NOT NULL  COMMENT '评论日期',
+`coachid` VARCHAR(20)  NOT NULL  COMMENT '学员id',
+`studentid`   VARCHAR(20)  NOT NULL COMMENT '教练id',
+`content`   VARCHAR(200) NOT NULL COMMENT '评论内容',
+ PRIMARY KEY(evaluationid),
+ FOREIGN KEY(coachid) REFERENCES coach(coachid),
+ FOREIGN KEY(studentid) REFERENCES student(studentid)
+) ENGINE=INNODB DEFAULT CHARSET=utf8
+
+CREATE TABLE `notice`(
+`noticeid`   VARCHAR(20)  NOT NULL,
+`title`      VARCHAR(50)  NOT NULL  COMMENT '公告标题',
+`content`    VARCHAR(2000)  NOT NULL  COMMENT '公告内容',
+`creattime`  DATE         NOT NULL COMMENT '发布时间',
+`creator`    VARCHAR(20)  NOT NULL COMMENT '发布人',
+ PRIMARY KEY(noticeid),
+ FOREIGN KEY(creator) REFERENCES admin(adminid)
+) ENGINE=INNODB DEFAULT CHARSET=utf8
 
 
 CREATE TABLE subjectskill(
@@ -83,6 +103,7 @@ CREATE TABLE subjectskill(
   title     VARCHAR(50) NOT NULL,
   content  VARCHAR(500) NOT NULL,
   creator  VARCHAR(20)  NOT NULL,
+  FOREIGN KEY(creator) REFERENCES admin(adminid),
   PRIMARY KEY (id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8
 

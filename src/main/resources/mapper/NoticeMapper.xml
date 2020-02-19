@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.dao.NoticeMapper">
+
+    <select id="queryNotice" resultType="Notice">
+        select
+        notice.noticeid,
+        notice.title,
+        notice.content,
+        notice.createtime,
+        notice.creator
+        from  notice notice
+        order by  notice.createtime  DESC  limit #{map.currIndex} , #{map.pageSize}
+    </select>
+
+    <select id="queryNoticeById" resultType="Notice">
+         select
+        notice.title,
+        notice.content,
+        notice.createtime,
+        notice.creator
+        from  notice
+        where noticeid=#{id}
+    </select>
+
+
+
+
+
+
+</mapper>

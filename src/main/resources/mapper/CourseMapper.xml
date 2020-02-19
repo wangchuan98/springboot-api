@@ -11,18 +11,29 @@
         <result property="licensetype" column="licensetype"></result>
         <result property="subject" column="subject"></result>
         <result property="studentid" column="studentid"></result>
+        <result property="coachid" column="coachid"></result>
         <!--映射关系，指定属性与属性的类型-->
         <association property="coach" javaType="Coach">
-            <id property="coachid" column="coachid"></id>
+            <id property="coachId" column="coachid"></id>
             <result property="name" column="name"></result>
             <result property="coachcar" column="coachcar"></result>
+            <result property="teachtype" column="teachtype"></result>
             <result property="phone" column="phone"></result>
+            <result property="age" column="age"></result>
+            <result property="face" column="face"></result>
+        </association>
+        <association property="student" javaType="Student">
+            <id property="studentId" column="studentid"></id>
+            <result property="name" column="name"></result>
+            <result property="phone" column="phone"></result>
+            <result property="age" column="age"></result>
+            <result property="sex" column="sex"></result>
         </association>
     </resultMap>
 
 
     <!--根据学员id查询正在进行的课程-->
-    <select id="querybyStudentid" resultMap="CourseCoachMap">
+    <select id="queryByStudentId" resultMap="CourseCoachMap">
     select
       course.courseid,
       course.studentid,
@@ -31,18 +42,60 @@
       course.subject,
       course.coachid,
       coach.name,
+      coach.age,
+      coach.face,
       coach.coachcar,
+      coach.teachtype,
       coach.phone
     from course  inner join  coach
     on  course.coachid=coach.coachid
     where
     course.status=2 and
     course.studentid in
-    <foreach collection="list" item="item" open="("  separator="," close=")">
+    <foreach collection="studentList" item="item" open="("  separator="," close=")">
         #{item}
     </foreach>
 
 
 </select>
+
+
+
+    <select id="queryByCoachId" resultMap="CourseCoachMap">
+        select
+        course.courseid,
+        course.coachid,
+        course.coursetype,
+        course.licensetype,
+        course.subject,
+        course.coachid,
+        student.name,
+        student.sex,
+        student.phone,
+        student.age,
+        coach.name,
+        coach.coachcar,
+        coach.phone
+        from course  inner join  coach
+        on  course.coachid=coach.coachid
+        inner  join student
+        on course.studentid=student.studentid
+        where
+        course.status=2 and
+        course.coachid in
+        <foreach collection="coachList" item="item" open="("  separator="," close=")">
+            #{item}
+        </foreach>
+        and student.studentid!='default'
+        <if test="param.studentName!=null and param.studentName!=''">
+            and  student.name like "%"#{param.studentName}"%"
+        </if>
+    </select>
+
+    <select id="queryDefaultCourse" parameterType="java.lang.String" resultType="java.lang.String">
+        select courseid
+        from course
+        where coachid=#{coachId} and  studentid="default"
+    </select>
 
 </mapper>

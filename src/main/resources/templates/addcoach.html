@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-select.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrapValidator.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mystyle.css}"/>
+    <title>教练新增</title>
+</head>
+<body>
+<div class="container-fluid panel-body" style="padding-bottom:0px">
+    <form class="form-horizontal validation-form" id="formAddCoach" th:action="@{/admin/coach/save}" method="post">
+        <div class="panel panel-default" style="margin-bottom: 0px">
+            <h4 class="panel panel-heading h4font">
+                教练新增
+                <small>（＊星号是必填项）</small>
+            </h4>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">用户编号</label>
+                    <div class="col-sm-4">
+                        <input readonly type="text" class="form-control" disabled name="studentId" placeholder="">
+                    </div>
+                    <label class="control-label">（系统自动生成）</label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>用户名</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="username" placeholder="用户名">
+                    </div>
+                    <label class="control-label">（输入类型是 数字组合，最少3位，最长16位）</label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>密码</label>
+                    <div class="col-sm-4">
+                        <input type="password" id="password" class="form-control" name="password" placeholder="密码">
+                    </div>
+                    <label class="control-label">（密码长度至少6位）</label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span  style="color: red;font-weight: bold">＊</span>确认密码</label>
+                    <div class="col-sm-4">
+                        <input type="password" id="password_again" class="form-control" name="password_again" placeholder="确认密码">
+                        <span id="hint"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>姓名</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="name" placeholder="姓名">
+                    </div>
+                    <label class="control-label">（输入类型是汉字组合，最少2位，最长6位）</label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>性别</label>
+                    <div class="col-sm-6">
+                        <label class="radio-inline">
+                            <input type="radio" value=1 name="sex" checked>男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value=2 name="sex">女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>年龄</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="age" placeholder="年龄">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>教学类型</label>
+
+                    <div class="col-sm-6">
+                        <label class="radio-inline">
+                            <input type="radio" value="vip" name="teachtype" checked>VIP
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="normal" name="teachtype">普通
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>教练车号</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="coachcar" placeholder="教练车号">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">电话</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="tel" placeholder="联系电话">
+                    </div>
+                    <label class="control-label">（格式：139xxxxxxxx）</label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>工作照</label>
+                    <div class="col-sm-4">
+                        <img id="previewImage" alt="预览图" th:src="@{/img/none.jpg}" width="150px" height="200px"/>
+                        <input type="file" id="workphoto" name="workphoto" accept="image/jpeg"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <div class="col-sm-offset-6 col-sm-1">
+                <button type="submit" class="btn btn-primary" id="savecoach">保 存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script th:inline="javascript">
+    $(function () {
+        console.log("coachadd");
+        //预览图片
+        $("#workphoto").change(function () {
+            var fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                $("#previewImage").show();
+                $("#previewImage").attr('src', e.target.result);
+            }
+            var workphoto = this.files[0];
+            fileReader.readAsDataURL(workphoto);
+        });
+        var $frm = $('form[id="formAddCoach"]');
+        $frm.validate({
+            rules: {
+                password: "required",
+                password_again: {
+                    equalTo: "#password"
+                }
+            }
+        });
+        $('#savecoach').click(function save() {
+            var data = new FormData(document.getElementById("formAddCoach"));
+            $.ajax({
+                url: "/admin/coach/save",
+                type: "POST",
+                dataType: "json",
+                enctype: "multipart/form-data",
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert(data.msg);
+                    $('#addcoach').load("/admin/addcoach");
+                },
+                error: function (XMLHttpResponse, textStatus, errorThrown) {//提交失败后执行的回调函数
+                    alert("网络错误");
+                }
+            });
+        });
+        $frm.bootstrapValidator({
+            message: '这是无效输入值',
+            feedbackIcons: {
+                /*输入框不同状态，显示图片的样式*/
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                username: {
+                    message: 'The user is not valid',
+                    validators: {
+                        notEmpty: {
+                            /*非空提示*/
+                            message: '用户名不能为空'
+                        },
+                        stringLength: {
+                            /*长度提示*/
+                            min: 3,
+                            max: 16,
+                            message: '用户名长度必须在3到16之间'
+                        },
+                        //
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: '用户名由数字组成'
+                        }
+                    }
+                },
+                age: {
+                    message: 'The user is not valid',
+                    validators: {
+                        notEmpty: {
+                            /*非空提示*/
+                            message: '年龄不能为空'
+                        },
+                        stringLength: {
+                            /*长度提示*/
+                            min: 1,
+                            max: 2,
+                            message: '年龄介于0-99之间'
+                        },
+                        //
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: '年龄由数字组成'
+                        }
+                    }
+                },
+                name: {
+                    message: 'name is not valid',
+//                    threshold :  6 , //有6字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                    validators: {
+                        notEmpty: {
+                            /*非空提示*/
+                            message: '昵称不能为空'
+                        },
+                        stringLength: {
+                            /*长度提示*/
+                            min: 2,
+                            max: 6,
+                            message: '昵称长度必须在2到6之间'
+                        }
+
+                    }
+                },
+                password: {
+                    message: 'password is not valid',
+//                    threshold :  6 , //有6字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                    validators: {
+                        notEmpty: {
+                            /*非空提示*/
+                            message: '密码不能为空'
+                        },
+                        stringLength: {
+                            /*长度提示*/
+                            min: 6,
+                            max: 30,
+                            message: '密码长度必须在6到30之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\.]+$/,
+                            message: '密码只能由由数字字母下划线和.组成'
+                        }
+                    }
+                },
+                coachcar: {
+                    message: 'name is not valid',
+//                    threshold :  6 , //有6字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                    validators: {
+                        notEmpty: {
+                            /*非空提示*/
+                            message: '教练车号不能为空'
+                        }
+                    }
+                },
+                workphoto: {
+                    message: 'name is not valid',
+//                    threshold :  6 , //有6字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                    validators: {
+                        notEmpty: {
+                            /*非空提示*/
+                            message: '证件照不能为空'
+                        }
+                    }
+                }
+            }
+        });
+        //bootstrapValidator导致表单ajax提交出现两次提交Bug解决
+        $("form.validation-form").each(function () {
+            var $form = $(this);
+            $form.bootstrapValidator().on('success.form.bv', function (e) {
+                // 阻止默认事件提交
+                console.log("success.form.bv阻止默认事件提交");
+                e.preventDefault();
+            });
+        });
+    })
+</script>
+</body>
+</html>

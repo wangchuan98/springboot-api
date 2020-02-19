@@ -10,11 +10,58 @@ import com.cc.entity.Student;
  */
 public class UserInfoVO
 {
+
     private  Integer identify;
     private  String adminId;
     private  String studentId;
     private  String coachId;
+    private  String userId;
     private  String  nickname;
+    private  String userName;
+    private  String passWord;
+    private  String face;
+    private  Integer sex;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassWord() {
+        return passWord;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
+    }
+
+    public String getFace() {
+        return face;
+    }
+
+    public void setFace(String face) {
+        this.face = face;
+    }
+
     private  String  sessionkey;
 
     public String getSessionkey() {

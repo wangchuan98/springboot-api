@@ -10,7 +10,6 @@ import java.util.Set;
 public interface StudentMapper {
      Student querybyUserid(String userid);
     void studentInsert(Student student);
-    List<Student> queryByMap(@Param("map") Map<String,Object> map);
     List<Student> queryByStudentId(@Param("list") List<String> list);
     List<Student> queryByParams(@Param("map") Map<String,Object> map);
     Integer queryCountByParams(@Param("map") Map<String,Object> map);

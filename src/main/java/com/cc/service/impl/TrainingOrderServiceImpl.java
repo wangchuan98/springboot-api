@@ -1,9 +1,11 @@
 package com.cc.service.impl;
 
 import com.cc.common.utils.DateUtil;
-import com.cc.common.SnowflakeIdWorker;
+import com.cc.common.utils.SnowflakeIdWorker;
 import com.cc.common.utils.StringUtil;
 import com.cc.common.enums.Status;
+import com.cc.dao.CoachMapper;
+import com.cc.dao.CourseMapper;
 import com.cc.dao.TrainingOrderMapper;
 import com.cc.entity.TrainingOrder;
 import com.cc.service.TrainingOrderService;
@@ -25,16 +27,23 @@ import java.util.*;
 public class TrainingOrderServiceImpl implements TrainingOrderService {
     @Autowired
     private TrainingOrderMapper orderMapper;
-    private  final  int[] HAVEORDER_OR_ABSENCE={Status.hava_order.value(),Status.absence.value()};
-    @Override
-    public   List<List<OrderStatus>> queryForStutas(String coachid, Date begindate) {
+    @Autowired
+    private CourseMapper courseMapper;
 
-        Date enddate=DateUtil.addDay(begindate,3);
-        List<TrainingOrder> orderlist=orderMapper.queryForStutas(coachid,begindate,enddate);
+    /**
+     * 查询未来num天的所有订单，分成num个list，再将这些list按日期顺序添加到
+     * 最外层list中
+     * @param  num  分成多少天
+     * @return list
+     */
+    @Override
+    public   List<List<OrderStatus>> queryForStatus(Integer num,String coachid, Date begindate) {
+        Date enddate=DateUtil.addDay(begindate,num-1);
+        List<TrainingOrder> orderlist=orderMapper.queryForStatus(coachid,begindate,enddate);
         Map<Date,ArrayList<OrderStatus>> resultmap=new HashMap();
         Iterator<TrainingOrder> it=orderlist.iterator();
         //初始化map，放入四天的日期信息，以及对应的位置信息集合
-        for(int i=0;i<4;i++)
+        for(int i=0;i<num;i++)
         {
             ArrayList<OrderStatus> list=new ArrayList<OrderStatus>();
             resultmap.put(DateUtil.addDay(begindate,i),list);
@@ -51,12 +60,17 @@ public class TrainingOrderServiceImpl implements TrainingOrderService {
         }
         List<List<OrderStatus>> resultlist=new ArrayList<>();
         //将查询到的结果集分好类之后再把map转成list,并且排好序
-        for(int i=0;i<4;i++)
+        for(int i=0;i<num;i++)
         {
             resultlist.add(resultmap.get(DateUtil.addDay(begindate,i)));
         }
         return resultlist;
     }
+
+
+
+
+
 
     @Override
     public boolean Order(TrainingOrder trainingOrder) {
@@ -87,7 +101,7 @@ public class TrainingOrderServiceImpl implements TrainingOrderService {
         String date= trainingOrder.getDate().toString();
         String time=trainingOrder.getBegintime().toString();
         String coachid=trainingOrder.getCoachid();
-        return  date+time+coachid;
+        return  date.replaceAll("-","")+time.substring(0,5).replaceAll(":", "")+coachid;
     }
 
     @Override
@@ -97,7 +111,7 @@ public class TrainingOrderServiceImpl implements TrainingOrderService {
         Map<String,Object> param=new HashMap<>();
         param.put("studentid",studentid);
         param.put("date",date);
-        param.put("statusarray",HAVEORDER_OR_ABSENCE);
+        param.put("status",Status.hava_order.value());
         Integer count=orderMapper.queryForHistoryCount(param);
         return count;
 
@@ -109,7 +123,7 @@ public class TrainingOrderServiceImpl implements TrainingOrderService {
         Map<String,Object> param=new HashMap<>();
         param.put("studentid",studentid);
         param.put("date",date);
-        param.put("statusarray",HAVEORDER_OR_ABSENCE);
+        param.put("status",Status.hava_order.value());
         param.put("currIndex",currIndex);
         param.put("pageSize",pageSize);
         List<TrainingOrder> result=orderMapper.queryHistoryOrder(param);
@@ -140,9 +154,37 @@ public class TrainingOrderServiceImpl implements TrainingOrderService {
         Map<String,Object> param=new HashMap<>();
         param.put("studentid",studentid);
         param.put("date",date);
-        param.put("statusarray",HAVEORDER_OR_ABSENCE);
+        param.put("status",Status.hava_order.value());
         TrainingOrder order=orderMapper.queryForTodaydetail(param);
         return order;
+    }
+
+    @Override
+    public List<TrainingOrder> queryOnedayForCoach(String coachId, Date date,Integer orderstatus) {
+        return orderMapper.queryOnedayForCoach(coachId,date,orderstatus);
+    }
+
+    @Override
+    public void insertHoliday(List<TrainingOrder> orderList) {
+        //查询这个教练的调休课程（studentId='default'）
+        String courseId=courseMapper.queryDefaultCourse(orderList.get(0).getCoachid());
+        Iterator<TrainingOrder> iterator=orderList.iterator();
+        while(iterator.hasNext()){
+            TrainingOrder order=iterator.next();
+            String orderid=this.createId(order);
+            order.setOrderid(orderid);
+            order.setCourseid(courseId);
+            order.setStatus(Status.rest.value());
+        }
+        orderMapper.insertTrainingOrderBatch(orderList);
+
+    }
+
+    @Override
+    public void cancelHoliday(List<String> ids) {
+         HashMap<String,Object> param=new HashMap<>();
+         param.put("status",Status.can_order.value());
+         orderMapper.updateTrainingOrderBatch(ids,param);
     }
 
 

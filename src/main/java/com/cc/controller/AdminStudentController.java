@@ -67,7 +67,7 @@ public class AdminStudentController {
             else
             {
                 //如果是注销的，就update原先的数据
-                userService.updateByUserId(result.getUserId(),vo.getPassword());
+                userService.updateByUserId(result.getUserId(),vo.getPassword(),User.STUDENT);
                 String studentId=studentService.updatebyUserId(vo,result.getUserId());
                 return   JsonResult.success("学员添加成功",studentId);
             }
@@ -160,11 +160,7 @@ public class AdminStudentController {
         return "studentedit";
     }
 
-    @RequestMapping(value = "/manage")
-    public String manage(HttpServletRequest request){
-        System.out.println("manage");
-        return  "studentmanage";
-    }
+
 
     private  JsonResult validateStudent(StudentVO vo){
 

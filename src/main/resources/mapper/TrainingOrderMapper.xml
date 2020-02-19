@@ -5,7 +5,7 @@
 <mapper namespace="com.cc.dao.TrainingOrderMapper">
 
 
-    <select id="queryForStutas" resultMap="order">
+    <select id="queryForStatus" resultMap="order">
         select
          `orderid`,
          `locationid`,
@@ -66,8 +66,70 @@
              `status`=#{status}
         where `orderid`=#{orderid}
     </update>
+    <update id="updateTrainingOrderBatch">
+         update  trainingorder
+         <set>
+             <if test="param.status!=null and param.status!=''">
+                 `status`=#{param.status}
+             </if>
+         </set>
+        where `orderid` in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
+    <insert id="insertTrainingOrderBatch">
+        insert  into trainingorder (
+        `orderid`,
+        `date`,
+        `begintime`,
+        `endtime`,
+        `locationid`,
+        `courseid`,
+        `status`
+        )values
+        <foreach collection="list" separator="," item="order">
+            (
+            #{order.orderid},
+            #{order.date},
+            #{order.begintime},
+            #{order.endtime},
+            #{order.locationid},
+            #{order.courseid},
+            #{order.status}
+            )
+        </foreach>
+    </insert>
 
+   <resultMap id="orderForCoach" type="TrainingOrder">
+       <id property="orderid" column="orderid"></id>
+       <result property="begintime" column="begintime"></result>
+       <result property="endtime" column="endtime"></result>
+       <association property="course" javaType="Course">
+           <result property="subject" column="subject"></result>
+           <result property="licensetype" column="licensetype"></result>
+           <association property="student" javaType="Student">
+               <result property="name" column="name"></result>
+           </association>
+       </association>
+   </resultMap>
+
+    <select id="queryOnedayForCoach" resultMap="orderForCoach">
+        SELECT
+         student.name,
+         course.licensetype,
+         course.subject,
+         trainingorder.orderid,
+         trainingorder.begintime,
+         trainingorder.endtime
+        FROM trainingorder trainingorder
+        INNER JOIN course course ON trainingorder.courseid=course.courseid
+        INNER JOIN student student ON student.studentid=course.studentid
+        WHERE trainingorder.date=#{date} AND course.coachid=#{coachId}
+        AND trainingorder.status=#{orderstatus} AND course.status=2
+        order by trainingorder.begintime
+    </select>
     <!--查询学员当天预约订单详细信息-->
     <select id="queryForTodaydetail" resultMap="ordermap">
         select
@@ -86,22 +148,15 @@
         INNER JOIN coach ON course.coachid=coach.coachid
         where
         course.studentid=#{studentid} and course.status=2
-        and trainingorder.date=#{date} and trainingorder.status in
-        <foreach collection="statusarray" index="index" item="item" open="(" close=")" separator=",">
-            #{item}
-        </foreach>
+        and trainingorder.date=#{date} and trainingorder.status=#{status}
     </select>
-
     <!--查询学员历史订单数量-->
     <select id="queryForHistoryCount" resultType="java.lang.Integer">
        select count(*)  from
         trainingorder trainingorder
         where
-        trainingorder.courseid in(select courseid from course where studentid=#{studentid} and status=2)
-        and trainingorder.date<![CDATA[ < ]]>#{map.date} and trainingorder.status in
-        <foreach collection="map.statusarray" index="index" item="item" open="(" close=")" separator=",">
-            #{item}
-        </foreach>
+        trainingorder.courseid in(select courseid from course where studentid=#{map.studentid} and status=2)
+        and trainingorder.date<![CDATA[ < ]]>#{map.date} and trainingorder.status =#{status}
     </select>
     <select id="queryHistoryOrder"  resultMap="ordermap" >
         select
@@ -117,14 +172,11 @@
         INNER JOIN course ON trainingorder.courseid=course.courseid
         INNER JOIN coach ON course.coachid=coach.coachid
         where
-        course.studentid=#{studentid} and course.status=2
-        and trainingorder.date<![CDATA[ < ]]>#{map.date} and trainingorder.status in
-        <foreach collection="map.statusarray" index="index" item="item" open="(" close=")" separator=",">
-            #{item}
-        </foreach>
+        course.studentid=#{map.studentid} and course.status=2
+        and trainingorder.date<![CDATA[ < ]]>#{map.date} and trainingorder.status =#{status}
+        ORDER BY `date` DESC
         limit #{map.currIndex} , #{map.pageSize}
     </select>
-
     <resultMap id="ordermap" type="TrainingOrder">
         <id  property="orderid" column="orderid"></id>
         <result property="date" column="date"></result>

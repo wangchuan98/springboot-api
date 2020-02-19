@@ -11,5 +11,6 @@ public interface UserMapper {
     Integer enablebyUserId(@Param("list") List<String> list, @Param("enable") Integer enable);
     User isExsitUserName(String username);
     void  updateByUserId(User user);
+    User queryByUserId(@Param("userId") String userId);
     User queryUserForLogin(@Param("username") String username, @Param("password") String password);
 }

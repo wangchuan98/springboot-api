@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,9 +29,9 @@ public class CourseController {
     private CourceService courceService;
     @ApiOperation(value="查询课程", notes="查询课程接口")
     @RequestMapping(value = "/querycourse")
-    private JsonResult querycourse( @RequestParam("studentId")String studentId) throws Exception  {
+    public JsonResult querycourse( @RequestParam("studentId")String studentId) throws Exception  {
        if(StringUtil.isEmpty(studentId))
-          return  JsonResult.error("暂无课程信息");
+          return  JsonResult.error("查询参数错误");
         ArrayList<String> ids= new ArrayList<String>();
         ids.add(studentId);
         List courseList=courceService.queryForSid(ids);
@@ -39,5 +40,16 @@ public class CourseController {
         else {
             return  JsonResult.success("查询成功",courseList.get(0));
         }
+    }
+
+
+    @RequestMapping(value = "/querymystudentlist")
+    public JsonResult queryStudent (@RequestParam("coachId")String coachId,@RequestParam("studentName") String studentName) throws Exception  {
+        if(StringUtil.isEmpty(coachId))
+            return  JsonResult.error("查询参数错误");
+        ArrayList<String> ids= new ArrayList<String>();
+        ids.add(coachId);
+        List courseList=courceService.queryMyStudentList(ids,studentName);
+        return  JsonResult.success("查询成功",courseList);
     }
 }

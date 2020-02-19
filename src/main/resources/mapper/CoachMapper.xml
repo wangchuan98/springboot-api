@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.dao.CoachMapper">
+
+    <sql id="coachSelect">
+         `coachid`,
+         `name`,
+         `sex`,
+         `age`,
+         `phone`,
+         `face`,
+         `userid`,
+         `coachcar`,
+         `teachtype`
+</sql>
+
+    <update id="updatebyCoachId">
+        update  coach
+        <set>
+            <if test="map.name!=null and map.name!=''">
+                `name`=#{map.name},
+            </if>
+            <if test="map.age!=null ">
+                `age`=#{map.age},
+            </if>
+            <if test="map.sex!=null">
+                `sex`=#{map.sex},
+            </if>
+            <if test="map.phone!=null and map.phone!=''">
+                `phone`=#{map.phone},
+            </if>
+            <if test="map.face!=null and map.face!=''">
+                `face`=#{map.face},
+            </if>
+            <if test="map.enable!=null ">
+                `enable`=#{map.enable},
+            </if>
+            <if test="map.coachcar!=null ">
+                `coachcar`=#{map.coachcar},
+            </if>
+            <if test="map.teachtype!=null ">
+                `teachtype`=#{map.teachtype},
+            </if>
+        </set>
+        where   coachId=#{map.coachId}
+    </update>
+
+    <update id="enablebyCoachId">
+        update coach set `enable`= #{enable}
+        where   coachid in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--根据coachId批量查询-->
+    <select id="queryByCoachId" resultType="Coach">
+        select
+        <include refid="coachSelect"></include>
+        from  coach
+        where  `enable`=0 and coachid in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="querybyUserid" resultType="Coach">
+        select
+        <include refid="coachSelect"></include>
+        from coach
+        where
+        userid=#{userid}
+    </select>
+    <resultMap id="coachList" type="Coach">
+        <id javaType="java.lang.String" jdbcType="VARCHAR" property="coachId" column="coachid"></id>
+        <result javaType="java.lang.Integer" jdbcType="INTEGER" property="sex" column="sex"></result>
+        <result javaType="java.lang.Integer" jdbcType="INTEGER" property="age" column="age"></result>
+        <result javaType="java.lang.String" jdbcType="VARCHAR" property="name" column="name"></result>
+        <result javaType="java.lang.String" jdbcType="VARCHAR" property="phone" column="phone"></result>
+        <result javaType="java.lang.String" jdbcType="VARCHAR" property="face" column="face"></result>
+        <result javaType="java.lang.String" jdbcType="VARCHAR" property="userid" column="userid"></result>
+        <result javaType="java.lang.String" jdbcType="VARCHAR" property="coachcar" column="coachcar"></result>
+        <result javaType="java.lang.String" jdbcType="VARCHAR" property="teachtype" column="teachtype"></result>
+        <association property="user"  javaType="User">
+            <result javaType="java.lang.String" jdbcType="VARCHAR" property="userName" column="username"></result>
+        </association>
+    </resultMap>
+
+    <!--分页查询教练列表，参数以map传入-->
+    <select id="queryByParams"  resultMap="coachList">
+        select
+        coach.coachid,
+        coach.name,
+        coach.sex,
+        coach.age,
+        coach.phone,
+        coach.face,
+        coach.userid,
+        coach.coachcar,
+        coach.teachtype,
+        users.username
+        from coach 
+        inner  join  users on users.userid=coach.userid
+        <where>
+
+            <if test="map.coachId!=null and map.coachId!=''">
+                and  coach.coachid=#{map.coachId}
+            </if>
+            <if test="map.name!=null and map.name!=''">
+                and  coach.name=#{map.name}
+            </if>
+            and coach.enable=0
+        </where>
+        limit #{map.currIndex} , #{map.pageSize}
+
+
+    </select>
+    <!--查询教练总数，参数以map传入-->
+    <select id="queryCountByParams"  resultType="java.lang.Integer">
+        select
+        count(*)
+        from coach
+        <where>
+            <if test="map.coachId!=null and map.coachId!=''">
+                and  coachid=#{map.coachId}
+            </if>
+            <if test="map.name!=null and map.name!=''">
+                and  name=#{map.name}
+            </if>
+            and `enable`=0
+        </where>
+    </select>
+
+    <insert id="coachInsert" parameterType="Coach">
+        insert  into  coach(`coachid`,`name`,`sex`,`age`,`phone`,`face`,`userid`,`coachcar`,`teachtype`)
+        values ( #{coachId}, #{name}, #{sex}, #{age}, #{phone}, #{face},#{userid},#{coachcar},#{teachtype})
+    </insert>
+
+</mapper>

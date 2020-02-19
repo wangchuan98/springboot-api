@@ -36,11 +36,11 @@ class SpringbootApiApplicationTests {
         Set<String>  select=new HashSet<>();
         select.add("studentid");
         select.add("age");
-        List<Student> list=mapper.queryByMap(map);
-
-        for(Student item:list){
-            System.out.println(item);
-        }
+//        List<Student> list=mapper.queryByMap(map);
+//
+//        for(Student item:list){
+//            System.out.println(item);
+//        }
 
     }
 
