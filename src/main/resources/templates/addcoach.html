@@ -136,6 +136,7 @@
             }
         });
         $('#savecoach').click(function save() {
+            //验证照片大小，限制在3
             var data = new FormData(document.getElementById("formAddCoach"));
             $.ajax({
                 url: "/admin/coach/save",

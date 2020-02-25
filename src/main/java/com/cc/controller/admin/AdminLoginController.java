@@ -1,4 +1,4 @@
-package com.cc.controller;
+package com.cc.controller.admin;
 
 import com.cc.common.RedisDao;
 import com.cc.common.utils.MD5Util;
@@ -36,6 +36,8 @@ public class AdminLoginController {
     public String login(@RequestParam(value = "userName" ) String userName,
                         @RequestParam(value = "passWord")
                         String passWord, @RequestParam(value = "verifyCode") String verifyCode, HttpServletRequest request, HttpSession session) throws Exception {
+        //用户名不清空
+        request.setAttribute("userName",userName);
         //校验空值
         if(StringUtil.isEmpty(verifyCode))
         {

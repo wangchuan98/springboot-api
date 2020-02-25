@@ -12,6 +12,7 @@
     <artifactId>springboot-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>springboot-api</name>
+    <packaging>jar</packaging>
     <description>project for Spring Boot</description>
 
     <properties>

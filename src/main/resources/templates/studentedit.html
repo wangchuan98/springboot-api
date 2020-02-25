@@ -28,7 +28,7 @@
                 <div class="form-group ">
                     <label class="col-sm-4 control-label">学员编号</label>
                     <div class="col-sm-8">
-                        <input type="text"  disabled="disabled"  class="form-control-static text-center" name="studentId" th:value="${studentId}"></input>
+                        <input type="text"  readonly class="form-control-static text-center" name="studentId" th:value="${studentId}"></input>
                     </div>
                 </div>
 
@@ -48,7 +48,7 @@
                             <input type="radio" value=1 name="sex"  th:checked="${sex==1}"  >男
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" value=0 name="sex" th:checked="${sex==2}" >女
+                            <input type="radio" value=2 name="sex" th:checked="${sex==2}" >女
                         </label>
                     </div>
                 </div>

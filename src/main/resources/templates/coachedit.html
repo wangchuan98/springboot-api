@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>简约车管理员端</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
+    <link rel="stylesheet" th:href="@{/css/ionicons.css}">
+    <link rel="stylesheet" th:href="@{/css/skins/skin-blue.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-tab.css}">
+    <link rel="stylesheet" th:href="@{/css/mystyle.css}">
+
+</head>
+
+<body>
+
+
+
+
+
+<div class="panel-body" style="padding-bottom:0px">
+
+    <div class="panel panel-default" style="margin-bottom: 0px">
+        <div class="panel-body row">
+            <form class="form-horizontal" id="coachEditForm">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">工作照</label>
+                    <div class="col-sm-8">
+                        <img id="editpreviewImage" alt="预览图" th:src="@{${workphoto}}"  width="150px" height="200px"/>
+                        <input type="file" id="editworkphoto" name="workphoto" accept="image/jpeg"/>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-sm-4 control-label">教练编号</label>
+                    <div class="col-sm-8">
+                        <input type="text"  readonly  class="form-control-static text-center" name="coachId" th:value="${coachId}"></input>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-sm-4 control-label">姓名</label>
+                    <div class="col-sm-8">
+                        <input type="text"    class="form-control-static text-center" name="name" th:value="${name}"></input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">性别</label>
+                    <div class="col-sm-8">
+                        <label class="radio-inline">
+                            <input type="radio" value=1 name="sex"  th:checked="${sex==1}"  >男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value=2 name="sex" th:checked="${sex==2}" >女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-sm-4 control-label">年龄</label>
+                    <div class="col-sm-8">
+                        <input type="number"  class="form-control-static text-center" name="age" th:value="${age}"></input>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-sm-4 control-label">教练车号</label>
+                    <div class="col-sm-8">
+                        <input type="text"  class="form-control-static text-center" name="coachcar" th:value="${coachcar}"></input>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-sm-4 control-label">电话</label>
+                    <div class="col-sm-8">
+                        <input type="text"  class="form-control-static text-center" name="tel" th:value="${phone}" ></input>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-sm-4 control-label">教学类型</label>
+                    <div class="col-sm-8">
+                        <label class="radio-inline">
+                            <input type="radio" value="vip" name="teachtype"  th:checked="${teachtype=='vip'}"  >VIP
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="normal" name="teachtype" th:checked="${teachtype=='normal'}" >normal
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <div class="col-sm-8">
+                        <input type="text"  hidden id="teachtypecp" class="form-control-static text-center"  disabled="disabled" th:value="${teachtype}" ></input>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    $(function () {
+        //预览图片
+        $("#editworkphoto").change(function () {
+            var fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                $("#editpreviewImage").show();
+                $("#editpreviewImage").attr('src', e.target.result);
+            }
+            var workphoto = this.files[0];
+            fileReader.readAsDataURL(workphoto);
+        });
+
+    })
+</script>
+</body>
+
+</html>

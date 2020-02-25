@@ -8,11 +8,18 @@ import java.util.Map;
 import java.util.Set;
 
 public interface StudentMapper {
+
      Student querybyUserid(String userid);
+
     void studentInsert(Student student);
+
     List<Student> queryByStudentId(@Param("list") List<String> list);
+
     List<Student> queryByParams(@Param("map") Map<String,Object> map);
+
     Integer queryCountByParams(@Param("map") Map<String,Object> map);
+
     Integer updatebyStudentId(@Param("map") Map<String,Object> map);
+
     Integer enablebyStudentId(@Param("list") List<String> list,@Param("enable") Integer enable);
 }

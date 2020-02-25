@@ -22,6 +22,16 @@ public class StudentVO {
     private  Integer age;
     //电话
     private  String tel;
+    //创建人
+    private  String creator;
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
     public String getStudentId() {
         return studentId;

@@ -1,4 +1,4 @@
-package com.cc.controller;
+package com.cc.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

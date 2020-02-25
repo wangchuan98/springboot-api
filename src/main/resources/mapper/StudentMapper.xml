@@ -5,13 +5,13 @@
 <mapper namespace="com.cc.dao.StudentMapper">
 
     <sql id="studentSelect">
-         `studentid`,
-         `name`,
-         `sex`,
-         `age`,
-         `phone`,
-         `face`,
-         `userid`
+         student.studentid,
+         student.name,
+         student.sex,
+         student.age,
+         student.phone,
+         student.face,
+         student.userid
 </sql>
 
     <update id="updatebyStudentId">
@@ -65,6 +65,7 @@
         where
         userid=#{userid}
     </select>
+
     <resultMap id="studentList" type="Student">
         <id javaType="java.lang.String" jdbcType="VARCHAR" property="studentId" column="studentid"></id>
         <result javaType="java.lang.Integer" jdbcType="INTEGER" property="sex" column="sex"></result>
@@ -73,13 +74,18 @@
         <result javaType="java.lang.String" jdbcType="VARCHAR" property="phone" column="phone"></result>
         <result javaType="java.lang.String" jdbcType="VARCHAR" property="face" column="face"></result>
         <result javaType="java.lang.String" jdbcType="VARCHAR" property="userid" column="userid"></result>
+        <association property="user" javaType="User">
+            <result javaType="java.lang.String" jdbcType="VARCHAR" property="userName" column="username"></result>
+        </association>
     </resultMap>
 
     <!--分页查询学员列表，参数以map传入-->
     <select id="queryByParams"  resultMap="studentList">
         select
+        users.username,
         <include refid="studentSelect"></include>
         from student
+        inner  join  users on student.userid=users.userid
         <where>
             <if test="map.studentId!=null and map.studentId!=''">
             and  studentid=#{map.studentId}
@@ -87,7 +93,7 @@
             <if test="map.name!=null and map.name!=''">
                 and  name=#{map.name}
             </if>
-            and `enable`=0
+            and student.enable=0 and  student.studentid<![CDATA[ <> ]]>'default'
         </where>
        limit #{map.currIndex} , #{map.pageSize}
 
@@ -105,13 +111,13 @@
             <if test="map.name!=null and map.name!=''">
                 and  name=#{map.name}
             </if>
-            and `enable`=0
+            and `enable`=0 and `studentid`!='default'
         </where>
     </select>
 
     <insert id="studentInsert" parameterType="Student">
-        insert  into  student(`studentid`,`name`,`sex`,`age`,`phone`,`face`,`userid`)
-        values ( #{studentId}, #{name}, #{sex}, #{age}, #{phone}, #{face},#{userid})
+        insert  into  student(`studentid`,`name`,`sex`,`age`,`phone`,`face`,`creator`,`creattime`,`userid`)
+        values ( #{studentId}, #{name}, #{sex}, #{age}, #{phone}, #{face}, #{creator}, #{creattime},#{userid})
     </insert>
 
 </mapper>

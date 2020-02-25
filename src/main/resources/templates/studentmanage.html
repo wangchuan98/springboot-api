@@ -19,8 +19,8 @@
                 <div class="form-group">
                     <label class="">角色名称</label>
                     <input type="text" class="form-control" id="studentIdForquery" placeholder="学员编号">
-                    <input type="text" class="form-control" id="nameForquery" placeholder="学员姓名">
-                    <input type="button" id="querybtn" style="margin-left: 20px" class="btn btn-default btn-primary"
+                    <input type="text" class="form-control" id="studentnameForquery" placeholder="学员姓名">
+                    <input type="button" id="studentquerybtn" style="margin-left: 20px" class="btn btn-default btn-primary"
                            value="查 询">
                 </div>
             </form>
@@ -81,6 +81,9 @@
                     }, {
                         field: 'studentId',
                         title: '学员编号',
+                    },{
+                        field: 'user.userName',
+                        title: '登陆名',
                     }, {
                         field: 'name',
                         title: '姓名'
@@ -110,7 +113,7 @@
                         sortName: params.sortName,      //排序列名
                         sortOrder: params.sortOrder, //排位命令（desc，asc）
                         studentId: $("#studentIdForquery").val(),
-                        name: $("#nameForquery").val()
+                        name: $("#studentnameForquery").val()
                     };
                     return temp;
                 },
@@ -280,7 +283,7 @@
                 });
             }
         })
-        $('#querybtn').click(function () {
+        $('#studentquerybtn').click(function () {
             $("#studentTable").bootstrapTable('refresh');
         });
     })

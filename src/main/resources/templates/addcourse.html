@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-select.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrapValidator.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mystyle.css}"/>
+    <title>教练新增</title>
+</head>
+<body>
+<div class="container-fluid panel-body" style="padding-bottom:0px">
+    <form class="form-horizontal validation-form" id="formAddCourse">
+        <div class="panel panel-default" style="margin-bottom: 0px">
+            <h4 class="panel panel-heading h4font">
+                课程分配
+                <small>（＊星号是必填项）</small>
+            </h4>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>课程类型</label>
+                    <div class="col-sm-6">
+                        <label class="radio-inline">
+                            <input type="radio" value="vip" name="coursetype" checked>VIP
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="normal" name="coursetype">普通
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>教练编号</label>
+                    <div class="col-sm-4">
+                        <input readonly type="text"  id="coachRefBack" class="form-control"  name="coachId" placeholder="">
+                    </div>
+                    <label class="control-label" id="coachRef"><i class="fa fa-search"></i></label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>学员编号</label>
+                    <div class="col-sm-4">
+                        <input readonly type="text" id="studentRefBack" class="form-control"  name="studentId" placeholder="">
+                    </div>
+                    <label class="control-label"  id="studentRef"><i class="fa fa-search"></i></label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>驾照类型</label>
+                    <div class="col-sm-6 selectpicker" id="licensetype">
+                        <select name="licensetype">
+                            <option value="C1" selected>C1</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span style="color: red;font-weight: bold">＊</span>科目</label>
+                    <div class="col-sm-6">
+                        <label class="radio-inline">
+                            <input type="radio" value='科目二' name="subject" checked>二
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value='科目三' name="subject">三
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <div class="col-sm-offset-6 col-sm-1">
+                <button type="button" class="btn btn-primary" id="savecourse">保 存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script th:inline="javascript">
+    $(function () {
+
+        var $frm = $('form[id="formAddCourse"]');
+        $('#studentRef').click(function save() {
+            BootstrapDialog.show({
+                title: '学员参照',
+                message: function (dialog) {
+                    var $message = $('<div></div>');
+                    var pageToLoad = dialog.getData('pageToLoad');
+                    $message.load(pageToLoad);
+                    return $message;
+                },
+                cssClass: "fade",
+                closeable: true,
+                data: {
+                    'pageToLoad': '/admin/student/studentref'
+                },
+                buttons: [{
+                    icon: 'glyphicon glyphicon-saved',
+                    label: '确定',
+                    cssClass: 'btn-primary',
+                    action: function (dialogItself) {
+                     //将窗口页面的参数传回
+                        var selectedLine = $("#studentTableRef").bootstrapTable('getSelections');
+                        if (selectedLine.length < 1) {
+                            alert("请选中一行数据");
+                        } else {
+                            var studentId = selectedLine[0].studentId;
+                            $("#studentRefBack").attr("value",studentId);
+                            dialogItself.close();
+                        }
+
+                    }
+                }, {
+                    icon: 'glyphicon glyphicon-ban-circle',
+                    label: '取消',
+                    action: function (dialogItself) {
+                        dialogItself.close();
+                    }
+                }]
+            });
+        });
+        $('#coachRef').click(function save() {
+            BootstrapDialog.show({
+                title: '教练参照',
+                message: function (dialog) {
+                    var $message = $('<div></div>');
+                    var pageToLoad = dialog.getData('pageToLoad');
+                    $message.load(pageToLoad);
+                    return $message;
+                },
+                cssClass: "fade",
+                closeable: true,
+                data: {
+                    'pageToLoad': '/admin/coach/coachref?coursetype='+$('input[name="coursetype"]:checked ').val()
+                },
+                buttons: [{
+                    icon: 'glyphicon glyphicon-saved',
+                    label: '确定',
+                    cssClass: 'btn-primary',
+                    action: function (dialogItself) {
+                        //将窗口页面的参数传回
+                        var selectedLine = $("#coachTableRef").bootstrapTable('getSelections');
+                        if (selectedLine.length < 1) {
+                            alert("请选中一行数据");
+                        } else {
+                            var coachId = selectedLine[0].coachId;
+                            $("#coachRefBack").attr("value",coachId);
+                            dialogItself.close();
+                        }
+
+                    }
+                }, {
+                    icon: 'glyphicon glyphicon-ban-circle',
+                    label: '取消',
+                    action: function (dialogItself) {
+                        dialogItself.close();
+                    }
+                }]
+            });
+        });
+        $('#savecourse').click(function save(){
+            var coachId=$("#coachRefBack").val();
+            var studentId=$("#studentRefBack").val();
+            if(coachId==null||coachId=="") {
+                alert("教练编号为必填参数");
+                return;
+            }
+            if(studentId==null||studentId==""){
+                alert("学员编号为必填参数");
+                return;
+            }
+            $.ajax({
+                url:"/admin/course/save",
+                type:"POST",
+                dataType: "json",
+                headers: {
+                    'Content-Type': 'application/json'},
+                data:JSON.stringify($frm.serializeObject()),
+                contentType: false,
+                processData: false,
+                success:function(data){
+                    alert(data.msg);
+                    if(data.status==200)
+                        $('#addcourse').load("/admin/addcourse");
+                },
+                error:function(XMLHttpResponse, textStatus, errorThrown){//提交失败后执行的回调函数
+                    alert("网络错误");
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

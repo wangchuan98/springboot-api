@@ -1,9 +1,7 @@
 package com.cc.service.impl;
 
-import com.cc.common.utils.AdminExceptionUtil;
 import com.cc.dao.SubjectSkillMapper;
 import com.cc.entity.PageInfo;
-import com.cc.entity.Student;
 import com.cc.entity.SubjectSkill;
 import com.cc.service.SubjectSkillService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.cc.controller;
+package com.cc.controller.admin;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;

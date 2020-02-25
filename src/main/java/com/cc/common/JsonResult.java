@@ -35,6 +35,9 @@ public class JsonResult {
      */
     public   static JsonResult  success(String msg,Object data){ return  new JsonResult(msg,data,200); }
 
+
+    public   static JsonResult  success(String msg){ return  new JsonResult(msg,null,200); }
+
     /**
      * 成功返回时调用，不需要传参
      * @return

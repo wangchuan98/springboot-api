@@ -27,10 +27,13 @@ CREATE TABLE `student`(
 `age`       INT(3) NOT NULL COMMENT '年龄',
 `phone`     VARCHAR(15) NOT NULL COMMENT '手机号',
 `face`      VARCHAR(50)    COMMENT '头像地址',
+`creator`   VARCHAR(20)   COMMENT '创建人',
+`creattime`  DATE    COMMENT '创建日期',
 `enable`  INT(1) default 0 COMMENT  '启用状态',
 `userid`    VARCHAR(20)NOT NULL UNIQUE ,
  PRIMARY KEY(studentid),
- FOREIGN KEY(userid) REFERENCES users(userid)
+ FOREIGN KEY(userid) REFERENCES users(userid),
+  FOREIGN KEY(creator) REFERENCES admin(adminid)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8
 
 CREATE TABLE `coach`(
@@ -45,8 +48,11 @@ CREATE TABLE `coach`(
 `coachcar`  VARCHAR(10)  NOT NULL COMMENT '教练车',
 `enable`  INT(1) DEFAULT 0 COMMENT  '启用状态',
 `userid`    VARCHAR(20)NOT NULL UNIQUE ,
+`creator`   VARCHAR(20)   COMMENT '创建人',
+`creattime`  DATE    COMMENT '创建日期',
  PRIMARY KEY(coachid),
- FOREIGN KEY(userid) REFERENCES users(userid)
+ FOREIGN KEY(userid) REFERENCES users(userid),
+ FOREIGN KEY(creator) REFERENCES admin(adminid)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8
 
 CREATE TABLE `course`(
@@ -57,9 +63,12 @@ CREATE TABLE `course`(
 `licensetype`   VARCHAR(2)  COMMENT  '驾照类型',
 `coursetype`    VARCHAR(10) NOT NULL COMMENT '课程类型',
 `subject`   VARCHAR(10)  COMMENT '科目',
+`creator`   VARCHAR(20)   COMMENT '创建人',
+`creattime`  DATE    COMMENT '创建日期',
  PRIMARY KEY(courseid),
  FOREIGN KEY(studentid) REFERENCES student(studentid),
- FOREIGN KEY(coachid) REFERENCES coach(coachid)
+ FOREIGN KEY(coachid) REFERENCES coach(coachid),
+  FOREIGN KEY(creator) REFERENCES admin(adminid)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8
 
 

@@ -111,6 +111,9 @@
             <if test="map.name!=null and map.name!=''">
                 and  coach.name=#{map.name}
             </if>
+            <if test="map.teachtype!=null and map.teachtype!=''">
+                and  coach.teachtype=#{map.teachtype}
+            </if>
             and coach.enable=0
         </where>
         limit #{map.currIndex} , #{map.pageSize}
@@ -129,13 +132,16 @@
             <if test="map.name!=null and map.name!=''">
                 and  name=#{map.name}
             </if>
+            <if test="map.teachtype!=null and map.teachtype!=''">
+                and  coach.teachtype=#{map.teachtype}
+            </if>
             and `enable`=0
         </where>
     </select>
 
     <insert id="coachInsert" parameterType="Coach">
-        insert  into  coach(`coachid`,`name`,`sex`,`age`,`phone`,`face`,`userid`,`coachcar`,`teachtype`)
-        values ( #{coachId}, #{name}, #{sex}, #{age}, #{phone}, #{face},#{userid},#{coachcar},#{teachtype})
+        insert  into  coach(`coachid`,`name`,`sex`,`age`,`phone`,`face`,`userid`,`coachcar`,`teachtype`,`creator`,`creattime`)
+        values ( #{coachId}, #{name}, #{sex}, #{age}, #{phone}, #{face},#{userid},#{coachcar},#{teachtype}, #{creator}, #{creattime})
     </insert>
 
 </mapper>

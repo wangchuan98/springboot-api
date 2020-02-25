@@ -1,5 +1,7 @@
 package com.cc.entity;
 
+import java.sql.Date;
+
 /**
  * @program: springboot-api
  * @description:
@@ -15,10 +17,30 @@ public class Course {
     private  String coursetype;
     private  String subject;
     private  Integer status;
+    //创建人
+    private  String creator;
+    //创建时间
+    private Date creattime;
 
     private  Coach coach;
 
     private  Student student;
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public Date getCreattime() {
+        return creattime;
+    }
+
+    public void setCreattime(Date creattime) {
+        this.creattime = creattime;
+    }
 
     public String getLicensetype() {
         return licensetype;

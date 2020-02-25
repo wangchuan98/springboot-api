@@ -12,8 +12,17 @@
         <result property="subject" column="subject"></result>
         <result property="studentid" column="studentid"></result>
         <result property="coachid" column="coachid"></result>
+        <result property="status" column="status"></result>
         <!--映射关系，指定属性与属性的类型-->
-        <association property="coach" javaType="Coach">
+        <association property="student" javaType="Student">
+            <id property="studentId" column="studentid"></id>
+            <result property="name" column="name"></result>
+            <result property="phone" column="phone"></result>
+            <result property="age" column="age"></result>
+            <result property="sex" column="sex"></result>
+        </association>
+
+        <association property="coach" javaType="Coach" >
             <id property="coachId" column="coachid"></id>
             <result property="name" column="name"></result>
             <result property="coachcar" column="coachcar"></result>
@@ -22,16 +31,38 @@
             <result property="age" column="age"></result>
             <result property="face" column="face"></result>
         </association>
+    </resultMap>
+    <resultMap id="CourseCoachMapTwo" type="Course">
+        <id property="courseid" column="courseid"/>
+        <result property="coursetype" column="coursetype"></result>
+        <result property="licensetype" column="licensetype"></result>
+        <result property="subject" column="subject"></result>
+        <result property="studentid" column="studentid"></result>
+        <result property="coachid" column="coachid"></result>
+        <result property="status" column="status"></result>
+        <!--映射关系，指定属性与属性的类型-->
         <association property="student" javaType="Student">
             <id property="studentId" column="studentid"></id>
-            <result property="name" column="name"></result>
-            <result property="phone" column="phone"></result>
-            <result property="age" column="age"></result>
-            <result property="sex" column="sex"></result>
+            <result property="name" column="studentname"></result>
+            <result property="phone" column="studentphone"></result>
+            <result property="age" column="studentage"></result>
+            <result property="sex" column="studentsex"></result>
+        </association>
+        <association property="coach" javaType="Coach" >
+            <id property="coachId" column="coachid"></id>
+            <result property="name" column="coachname"></result>
+            <result property="coachcar" column="coachcar"></result>
+            <result property="teachtype" column="teachtype"></result>
+            <result property="phone" column="coachphone"></result>
+            <result property="age" column="coachage"></result>
+            <result property="face" column="coachface"></result>
         </association>
     </resultMap>
 
-
+    <insert id="insertCourse" parameterType="Course">
+         insert  into  course(`courseid`,`studentid`,`coachid`,`status`,`licensetype`,`coursetype`,`subject`,`creator`,`creattime`)
+        values (   #{courseid},  #{studentid},  #{coachid},  #{status},  #{licensetype},  #{coursetype},  #{subject}, #{creator}, #{creattime})
+    </insert>
     <!--根据学员id查询正在进行的课程-->
     <select id="queryByStudentId" resultMap="CourseCoachMap">
     select
@@ -59,9 +90,7 @@
 
 </select>
 
-
-
-    <select id="queryByCoachId" resultMap="CourseCoachMap">
+    <select id="queryByCoachId" resultMap="CourseCoachMapTwo">
         select
         course.courseid,
         course.coachid,
@@ -69,13 +98,13 @@
         course.licensetype,
         course.subject,
         course.coachid,
-        student.name,
-        student.sex,
-        student.phone,
-        student.age,
-        coach.name,
-        coach.coachcar,
-        coach.phone
+        student.name studentname,
+        student.sex  studentsex,
+        student.phone studentphone,
+        student.age studentage,
+        coach.name coachname,
+        coach.coachcar coachcar,
+        coach.phone coachphone
         from course  inner join  coach
         on  course.coachid=coach.coachid
         inner  join student
@@ -97,5 +126,82 @@
         from course
         where coachid=#{coachId} and  studentid="default"
     </select>
+
+    <select id="queryCourseList"  resultMap="CourseCoachMapTwo">
+        select
+        course.courseid,
+        course.status,
+        course.licensetype,
+        course.coursetype,
+        course.subject,
+        coach.coachid,
+        coach.name coachname,
+        coach.age coachage,
+        student.studentid,
+        student.name studentname,
+        student.age studentage
+        from
+        course course
+        inner join coach coach on course.coachid=coach.coachid
+        inner join student student on course.studentid=student.studentid
+        <where>
+            <if test="map.coachId!=null and map.coachId!=''">
+                and  coach.coachid=#{map.coachId}
+            </if>
+            <if test="map.coachName!=null and map.coachName!=''">
+                and  coach.name=#{map.coachName}
+            </if>
+            <if test="map.studentId!=null and map.studentId!=''">
+                and  student.studentid=#{map.studentId}
+            </if>
+            <if test="map.studentName!=null and map.studentName!=''">
+                and  student.name=#{map.studentName}
+            </if>
+            <if test="map.status!=null and map.status!=''">
+                and  course.status=#{map.status}
+            </if>
+            <if test="map.coursetype!=null and map.coursetype!=''">
+                and  course.coursetype=#{map.coursetype}
+            </if>
+            and student.studentid!='default'
+        </where>
+        limit #{map.currIndex} , #{map.pageSize}
+    </select>
+    <select id="queryCount" resultType="java.lang.Integer">
+        select
+        count(*)
+        from course
+        inner join coach coach on course.coachid=coach.coachid
+        inner join student student on course.studentid=student.studentid
+        <where>
+            <if test="map.coachId!=null and map.coachId!=''">
+                and  coach.coachid=#{map.coachId}
+            </if>
+            <if test="map.coachName!=null and map.coachName!=''">
+                and  coach.name=#{map.coachName}
+            </if>
+            <if test="map.studentId!=null and map.studentId!=''">
+                and  student.studentid=#{map.studentId}
+            </if>
+            <if test="map.studentName!=null and map.studentName!=''">
+                and  student.name=#{map.studentName}
+            </if>
+            <if test="map.status!=null and map.status!=''">
+                and  course.status=#{map.status}
+            </if>
+            <if test="map.coursetype!=null and map.coursetype!=''">
+                and  course.coursetype=#{map.coursetype}
+            </if>
+            and student.studentid!='default'
+        </where>
+    </select>
+
+    <update id="updateCourse">
+        update course set status=#{status}
+        where courseid in
+        <foreach collection="courseList" open="(" separator="," close=")" item="id">
+        #{id}
+        </foreach>
+    </update>
 
 </mapper>

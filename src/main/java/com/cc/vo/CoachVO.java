@@ -27,8 +27,19 @@ public class CoachVO {
     private  String coachcar;
     //教学类型
     private  String teachtype;
-
+    //工作照片地址
     private  String workphoto;
+
+    //创建人
+    private  String creator;
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
     public String getWorkphoto() {
         return workphoto;

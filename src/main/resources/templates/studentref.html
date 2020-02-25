@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>简约车管理员端</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
+    <link rel="stylesheet" th:href="@{/css/ionicons.css}">
+    <link rel="stylesheet" th:href="@{/css/skins/skin-blue.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-tab.css}">
+</head>
+<body>
+<div class="container-fluid panel-body" style="padding-bottom:0px">
+    <div class="panel panel-default" style="margin-bottom: 0px">
+        <div class="panel-body">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="">查询条件</label>
+                    <input type="text" class="form-control" id="studentIdForquery" placeholder="学员编号">
+                    <input type="text" class="form-control" id="refstudentnameForquery" placeholder="学员姓名">
+                </div>
+                <div class="form-group">
+                    <input type="button" id="studentqueryrefbtn" style="margin-left: 20px" class="btn btn-default btn-primary"
+                           value="查 询">
+                </div>
+            </form>
+        </div>
+    </div>
+    <table id="studentTableRef">
+    </table>
+</div>
+<script>
+    var TableInit = function () {
+        var oTableInit = new Object();
+        oTableInit.Init = function () {
+            var $table = $("#studentTableRef");
+            $table.bootstrapTable({
+                url: '/admin/student/studentlist',        //请求后台的URL（*）
+                method: 'GET',                      //请求方式（*）
+                striped: true,                      //是否显示行间隔色
+                singleSelect: true,
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                sidePagination: 'server',           //分页方式：client客户端分页，server服务端分页（*）
+                pagination: true,                   //是否显示分页（*）
+                pageNumber: 1,                      //初始化加载第一页，默认第一页
+                pageSize: 5,                        //每页的记录行数（*）
+                pageList: [5],          //可供选择的每页的行数（*）
+                // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                showColumns: true,                  //是否显示所有的列（选择显示的列）
+                minimumCountColumns: 2,             //最少允许的列数
+                showRefresh: true,                  //是否显示刷新按钮
+                clickToSelect: true,                //是否启用点击选中行
+                sortable: true,                     //是否启用排序
+                sortOrder: "desc",                   //排序方式
+                sortName: 'id',
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                idField: 'id',
+                columns: [
+                    {
+                        filed: 'status',
+                        checkbox: true,
+                        formatter: function (value, row, index) {
+                            if (row.status == 1)
+                                return {
+                                    checked: true//设置选中
+                                };
+                            return value;
+                        }
+                    }, {
+                        field: 'studentId',
+                        title: '学员编号',
+                    }, {
+                        field: 'name',
+                        title: '姓名'
+                    }, {
+                        field: 'sex',
+                        title: '性别',
+                        formatter: function (value, row, index) {
+                            if (row.sex == 1)
+                                return "男";
+                            return "女";
+                        }
+                    }, {
+                        field: 'age',
+                        title: '年龄',
+                        sortable: true
+                    }, {
+                        field: 'phone',
+                        title: '电话'
+                    }
+                ],
+                queryParamsType: '',
+                queryParams: function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    var temp = {
+                        pageSize: params.pageSize,                         //页面大小
+                        pageNumber: params.pageNumber,  //页码
+                        sortName: params.sortName,      //排序列名
+                        sortOrder: params.sortOrder, //排位命令（desc，asc）
+                        studentId: $("#studentIdForquery").val(),
+                        name: $("#refstudentnameForquery").val()
+                    };
+                    return temp;
+                },
+                rowStyle: function (row, index) {
+                    //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
+                    var strclass = "";
+                    if (row.name == "删除环境") {
+                        strclass = 'danger';//还有一个active
+                    }
+                    else if (row.name == "新增环境") {
+                        strclass = 'success';
+                    }
+                    else {
+                        return {};
+                    }
+                    return {classes: strclass}
+                },
+                onLoadSuccess: function () {
+                    console.log("数据加载成功！");
+                },
+                onLoadError: function () {
+                    console.log("数据加载失败！");
+                },
+                onDblClickRow: function (row, $element) {
+                }
+            });
+        };
+        return oTableInit;
+    };
+    $(function () {
+        $table = new TableInit();
+        $table.Init();
+        $('#studentqueryrefbtn').click(function () {
+            $("#studentTableRef").bootstrapTable('refresh');
+        });
+    })
+</script>
+</body>
+</html>

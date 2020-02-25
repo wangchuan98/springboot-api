@@ -1,4 +1,4 @@
-package com.cc.controller;
+package com.cc.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +18,17 @@ public class AdminHomeController {
     public String addCoach(HttpServletRequest request){
         return  "addcoach";
     }
+    @RequestMapping(value = "/addcourse")
+    public String addCourse(HttpServletRequest request){
+        return  "addcourse";
+    }
     @RequestMapping(value = "/coach/manage")
     public String coachManage(HttpServletRequest request){
         return  "coachmanage";
+    }
+    @RequestMapping(value = "/course/manage")
+    public String courseManage(HttpServletRequest request){
+        return  "coursemanage";
     }
     @RequestMapping(value = "/student/manage")
     public String studentManage(HttpServletRequest request){

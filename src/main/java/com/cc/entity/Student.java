@@ -1,5 +1,7 @@
 package com.cc.entity;
 
+import java.sql.Date;
+
 /**
  * @program: springboot-api
  * @description: 学员实体类
@@ -7,18 +9,7 @@ package com.cc.entity;
  * @create: 2019-12-12
  */
 public class Student {
-    @Override
-    public String toString() {
-        return "Student{" +
-                "studentId='" + studentId + '\'' +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", sex=" + sex +
-                ", phone='" + phone + '\'' +
-                ", face='" + face + '\'' +
-                ", userid='" + userid + '\'' +
-                '}';
-    }
+
 
     //主键
     private  String studentId;
@@ -26,7 +17,7 @@ public class Student {
     private  String name;
     //年龄
     private  Integer age;
-    //性别 1代表男0代表女
+    //性别
     private  Integer sex;
     //手机号
     private  String phone;
@@ -34,8 +25,38 @@ public class Student {
     private  String face;
     //userid
     private  String userid;
-
+    //创建人
+    private  String creator;
+    //创建时间
+    private   Date  creattime;
+    //启用状态
     private  Integer enable;
+
+    private  User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public Date getCreattime() {
+        return creattime;
+    }
+
+    public void setCreattime(Date creattime) {
+        this.creattime = creattime;
+    }
 
     public Integer getEnable() {
         return enable;

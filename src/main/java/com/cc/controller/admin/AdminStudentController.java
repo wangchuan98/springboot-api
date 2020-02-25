@@ -1,4 +1,4 @@
-package com.cc.controller;
+package com.cc.controller.admin;
 
 import com.cc.common.JsonResult;
 import com.cc.common.utils.ObjectUtil;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,13 +45,14 @@ public class AdminStudentController {
     CourceService courceService;
 
 
-    //非空检查时，可以为空的参数
-     private final  String[] STUDENT_SAVECANNULL={"studentId","tel"};
-    private final  String[] STUDENT_UPDATACANNULL={"studentId","tel","username","password"};
+    //新增非空检查时，可以为空的参数
+     private final  String[] STUDENT_SAVECANNULL={"studentId","tel","creator"};
+    //修改非空检查时，可以为空的参数
+    private final  String[] STUDENT_UPDATACANNULL={"studentId","tel","username","password","creator"};
      @Transactional(propagation = Propagation.REQUIRED)
     @RequestMapping(value = "/save")
     @ResponseBody
-    public JsonResult save(@RequestBody StudentVO vo) throws Exception {
+    public JsonResult save(@RequestBody StudentVO vo,HttpServletRequest request) throws Exception {
         //校验空值
         if(ObjectUtil.objectIsEmpty(vo,STUDENT_SAVECANNULL))
             return  JsonResult.error("必填参数存在空值");
@@ -72,9 +74,13 @@ public class AdminStudentController {
                 return   JsonResult.success("学员添加成功",studentId);
             }
         }
-
-
+        //添加创建人信息
+         HttpSession session=request.getSession();
+        String creator=session.getAttribute("userId").toString();
+        vo.setCreator(creator);
+        //将账号密码保存到users表
         String userId=userService.insertUser(vo.getUsername(),vo.getPassword(),User.STUDENT);
+        //保存到student表
         String studentId=studentService.insertStudent(vo,userId);
         return   JsonResult.success("学员添加成功",studentId);
     }
@@ -83,7 +89,7 @@ public class AdminStudentController {
     @Transactional(propagation = Propagation.REQUIRED)
     @RequestMapping(value = "/update")
     @ResponseBody
-    public JsonResult update(@RequestBody StudentVO vo,HttpServletRequest request) throws Exception {
+    public JsonResult update(@RequestBody StudentVO vo) throws Exception {
          //校验空值
         if(ObjectUtil.objectIsEmpty(vo,STUDENT_UPDATACANNULL))
             return  JsonResult.error("必填参数存在空值");
@@ -91,10 +97,6 @@ public class AdminStudentController {
         JsonResult validate=validateStudent(vo);
         if(validate!=null)
             return  validate;
-        String studentId=request.getParameter("studentId");
-        if(StringUtil.isEmpty(studentId))
-            return  JsonResult.error("修改失败");
-        vo.setStudentId(studentId);
         Boolean flag=studentService.updatebyStudentId(vo);
         if(flag){
             return JsonResult.success("修改成功",null);
@@ -139,9 +141,9 @@ public class AdminStudentController {
          Integer pageSize=Integer.valueOf(request.getParameter("pageSize"));
          Integer pageNumber=Integer.valueOf(request.getParameter("pageNumber"));
          PageInfo pageInfo=new PageInfo(pageNumber,pageSize);
-         List<Student> list=studentService.queryByParam(name,studentId,pageInfo);
+         List<Student> list=studentService.queryStudentList(name,studentId,pageInfo);
          //查询总数
-        Integer count=studentService.queryCountByParam(name,studentId);
+        Integer count=studentService.queryStudentCount(name,studentId);
         TableResultVO<Student> resultVO=new TableResultVO<>();
         resultVO.setRows(list);
         resultVO.setTotal(count);
@@ -152,6 +154,12 @@ public class AdminStudentController {
     public String studentDetail(HttpServletRequest request){
        this.setStudentInfo(request);
         return "studentdetail";
+    }
+
+    @RequestMapping(value = "/studentref")
+    public String studentRef(HttpServletRequest request){
+        //查询学员列表
+        return "studentref";
     }
 
     @RequestMapping(value = "/studentedit")

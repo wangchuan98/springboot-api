@@ -155,8 +155,8 @@
        select count(*)  from
         trainingorder trainingorder
         where
-        trainingorder.courseid in(select courseid from course where studentid=#{map.studentid} and status=2)
-        and trainingorder.date<![CDATA[ < ]]>#{map.date} and trainingorder.status =#{status}
+        trainingorder.courseid in(select courseid from course where studentid=#{map.studentid})
+        and trainingorder.date<![CDATA[ < ]]>#{map.date} and trainingorder.status =#{map.status}
     </select>
     <select id="queryHistoryOrder"  resultMap="ordermap" >
         select
@@ -172,8 +172,8 @@
         INNER JOIN course ON trainingorder.courseid=course.courseid
         INNER JOIN coach ON course.coachid=coach.coachid
         where
-        course.studentid=#{map.studentid} and course.status=2
-        and trainingorder.date<![CDATA[ < ]]>#{map.date} and trainingorder.status =#{status}
+        course.studentid=#{map.studentid}
+        and trainingorder.date<![CDATA[ < ]]>#{map.date} and trainingorder.status =#{map.status}
         ORDER BY `date` DESC
         limit #{map.currIndex} , #{map.pageSize}
     </select>

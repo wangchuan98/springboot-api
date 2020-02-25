@@ -125,13 +125,6 @@
 <script th:inline="javascript">
 
     $(function () {
-        $('button[name="backToList"]').click(function (e) {
-
-            var url="/user/ulist";
-
-            $('#container').load(url);
-
-        });
         var $frm =  $('form[id="formAdd"]');
         $('#save').click(function save(){
         $.ajax({
@@ -139,15 +132,14 @@
             type:"POST",
             dataType: "json",
             headers: {
-                'Content-Type': 'application/json'},  //application/x-www-form-urlencoded  application/json
+                'Content-Type': 'application/json'},
             data:JSON.stringify($frm.serializeObject()),
             contentType: false,
             processData: false,
             success:function(data){
                 alert(data.msg);
+                if(data.status==200)
                 $('#addstudent').load("/admin/addstudent");
-
-
             },
             error:function(XMLHttpResponse, textStatus, errorThrown){//提交失败后执行的回调函数
                 alert("网络错误");
@@ -158,8 +150,6 @@
             }
         });
     });
-
-
         $frm.validate({
             rules: {
                 password: "required",
