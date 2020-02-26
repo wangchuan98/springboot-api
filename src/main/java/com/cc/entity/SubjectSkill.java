@@ -7,11 +7,15 @@ package com.cc.entity;
  * @create: 2020-01-19
  */
 public class SubjectSkill {
-
+    //技巧id
     private  String id;
+    //科目
     private  Integer category;
+    //技巧标题
     private  String title;
+    //技巧内容
     private  String content;
+    //创建人
     private  String creator;
 
     public String getId() {

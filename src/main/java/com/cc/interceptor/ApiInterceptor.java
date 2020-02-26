@@ -15,7 +15,7 @@ import java.io.OutputStream;
 
 /**
  * @program: springboot-api
- * @description:
+ * @description:小程序端登录拦截器
  * @author: wangchuan
  * @create: 2020-01-31
  */

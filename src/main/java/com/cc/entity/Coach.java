@@ -10,17 +10,27 @@ import java.sql.Date;
  */
 public class Coach {
 
-
+    //教练id
     private  String coachId;
+    //姓名
     private  String name;
+    //性别
     private  Integer sex;
+    //年龄
     private  Integer age;
+    //电话
     private  String phone;
+    //用户头像地址
     private  String face;
+    //教龄
     private  Integer coachage;
+    //教练车牌
     private  String coachcar;
+    //用户id
     private  String userid;
+    //失效标志
     private  Integer enable;
+    //教学类型
     private  String teachtype;
     //创建人
     private  String creator;

@@ -23,8 +23,6 @@ import javax.servlet.http.HttpSession;
 public class AdminLoginController {
 
 
-    @Autowired
-    private  RedisDao redisDao;
     @GetMapping({"/login"})
     public String login() {
         return "login";
@@ -54,8 +52,6 @@ public class AdminLoginController {
             request.setAttribute("errorMsg", "验证码错误");
             return "login";
         }
-        //校验非法符号
-
         //校验密码
         String MDPassWord = MD5Util.getMD5Str(passWord);
         UserInfoVO result = userService.queryUserForLogin(userName, MDPassWord,null);
@@ -73,10 +69,6 @@ public class AdminLoginController {
 
     }
 
-    @RequestMapping(value = "/index",method = RequestMethod.GET)
-    public String index(HttpServletRequest request){
-        return  "home.html";
-    }
 
 
 

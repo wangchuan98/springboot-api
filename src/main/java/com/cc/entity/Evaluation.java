@@ -10,12 +10,19 @@ import java.sql.Timestamp;
  * @create: 2020-02-13
  */
 public class Evaluation {
+    //评论id
     private  String evaluationId;
+    //教练id
     private  String coachId;
+    //学员id
     private  String studentId;
+    //评论内容
     private  String content;
+    //评论时间
     private Timestamp date;
+
     private  Coach coach;
+
     private  Student student;
 
     public String getEvaluationId() {

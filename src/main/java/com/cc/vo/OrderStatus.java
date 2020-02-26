@@ -9,7 +9,9 @@ import java.sql.Date;
  * @create: 2019-12-20
  */
 public class OrderStatus {
+    //时间段位置
     private  String locationid;
+    //时间段状态
     private  Integer status;
 
 

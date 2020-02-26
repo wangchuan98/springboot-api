@@ -7,8 +7,11 @@ package com.cc.entity;
  * @create: 2020-01-15
  */
 public class PageInfo {
+    //总数
     private  Integer total;
+    //当前页数
     private  Integer pageNumber;
+    //一页的大小
     private  Integer pageSize;
 
     public PageInfo(Integer pageNumber,Integer pageSize) {

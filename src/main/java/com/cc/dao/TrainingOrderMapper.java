@@ -13,12 +13,16 @@ public interface TrainingOrderMapper {
     void insertTrainingOrderBatch(@Param("list") List<TrainingOrder> list);
     //批量修改订单,根据订单主键
     void updateTrainingOrderBatch(@Param("list") List<String> list,@Param("param") Map<String,Object> param );
+    //插入订单
     void insertTrainingOrderOne(TrainingOrder order);
+    //更新订单
     void updateTrainingOrderOne(TrainingOrder order);
     //查询某日所有的订单的订单状态
     List<TrainingOrder>  queryForStatus(@Param("coachid") String coachid,
                                         @Param("begindate")Date begindate,@Param("enddate")Date enddate);
+    //历史订单总数
     Integer queryForHistoryCount(@Param("map") Map<String,Object> map);
+    //历史订单列表
     List<TrainingOrder> queryHistoryOrder(@Param("map") Map<String,Object> map);
     //查询当天预约的详细信息
     TrainingOrder queryForTodaydetail(Map<String,Object> param);

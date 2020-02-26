@@ -10,17 +10,27 @@ import com.cc.entity.Student;
  */
 public class UserInfoVO
 {
-
+    //用户身份
     private  Integer identify;
+    //管理员id
     private  String adminId;
+    //学员id
     private  String studentId;
+    //教练id
     private  String coachId;
+    //用户id
     private  String userId;
+    //用户名称
     private  String  nickname;
+    //登录用户名
     private  String userName;
+    //密码
     private  String passWord;
+    //用户头像地址
     private  String face;
+    //用户性别
     private  Integer sex;
+
 
     public String getUserId() {
         return userId;

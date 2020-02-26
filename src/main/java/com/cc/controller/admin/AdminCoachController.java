@@ -62,12 +62,14 @@ public class AdminCoachController {
                 //如果是注销的，就update原先的数据
                 userService.updateByUserId(result.getUserId(), vo.getPassword(),User.CAOCH);
                 String coachId = coachService.updatebyUserId(vo, result.getUserId());
+                //保存照片
                 this.upload(request,coachId);
                 return JsonResult.success("教练添加成功", coachId);
             }
         }
         String userId=userService.insertUser(vo.getUsername(),vo.getPassword(),User.CAOCH);
         String coachId=coachService.insertCoach(vo,userId);
+        //保存照片
         this.upload(request,coachId);
         return   JsonResult.success("教练添加成功",coachId);
     }
@@ -82,6 +84,7 @@ public class AdminCoachController {
         //校验空值
         if (ObjectUtil.objectIsEmpty(vo, COACH_UPDATACANNULL))
             return JsonResult.error("必填参数存在空值");
+        //判断是否修改了教学类型
         String  changeflag=String.valueOf(request.getParameter("changeflag"));
         boolean typechange=(!StringUtil.isEmpty(changeflag)&&"change".equals(changeflag))?true:false;
         coachService.updatebyCoachId(vo,typechange);
@@ -93,7 +96,6 @@ public class AdminCoachController {
 
     @RequestMapping(value = "/coachref")
     public String studentRef(HttpServletRequest request){
-
         String coursetype=request.getParameter("coursetype");
         request.setAttribute("coursetype",coursetype);
         return "coachref";
@@ -103,12 +105,14 @@ public class AdminCoachController {
     @ResponseBody
     public TableResultVO<Coach> adminCoachlist(HttpServletRequest request){
 
+        //获取查询参数
         String name=request.getParameter("name");
         String coachId=request.getParameter("coachId");
         String teachtype=request.getParameter("teachtype");
         Integer pageSize=Integer.valueOf(request.getParameter("pageSize"));
         Integer pageNumber=Integer.valueOf(request.getParameter("pageNumber"));
         PageInfo pageInfo=new PageInfo(pageNumber,pageSize);
+        //查询教练列表
         List<Coach> list=coachService.queryCoachList(name,coachId,teachtype,pageInfo);
         //查询总数
         Integer count=coachService.queryCountCoach(name,teachtype,coachId);
@@ -140,6 +144,11 @@ public class AdminCoachController {
         this.setCoachInfo(request);
         return "coachdetail";
     }
+
+    /**
+     * 将查询到的教练信息设置到request属性中
+     * @param request
+     */
     private  void setCoachInfo(HttpServletRequest request){
         String coachId=request.getParameter("coachId");
         CoachVO coach=coachService.queryByCoachId(coachId);
@@ -154,6 +163,12 @@ public class AdminCoachController {
             request.setAttribute("workphoto",coach.getWorkphoto());
         }
     }
+
+    /**
+     * 将request中的参数组装成VO
+     * @param request
+     * @return
+     */
     private CoachVO transform(HttpServletRequest request) {
         CoachVO vo = new CoachVO();
         HttpSession session=request.getSession();
@@ -172,11 +187,19 @@ public class AdminCoachController {
         return vo;
     }
 
+    /**
+     * 保存照片
+     * @param request
+     * @param CoachId
+     * @throws Exception
+     */
     private  void upload(HttpServletRequest request,String CoachId) throws Exception {
 
         Part part = request.getPart("workphoto");
         String suffix = ".jpg";
         if (part != null) {
+            //String upload="home/ubuntu/workspace";
+            //String filename = upload + "/" + CoachId + suffix;
             String upload = "D:\\order\\workphoto";
             String filename = upload + "\\" + CoachId + suffix;
             part.write(filename);

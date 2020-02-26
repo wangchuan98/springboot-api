@@ -35,13 +35,10 @@ public class TrainingOrder {
     //状态 状态:1未预约2已预约3调休
     @ApiModelProperty(hidden=true)
     private  Integer status;
-
+    //课程id
     private  String courseid;
 
-
-
     private  Course course;
-
 
     //学员id
     @ApiModelProperty(value="学员id", name="studentid", example="s002", required=true)
@@ -49,8 +46,6 @@ public class TrainingOrder {
     //教练id
     @ApiModelProperty(value="教练id", name="coachid", example="c003", required=true)
     private  String coachid;
-
-
 
     //Getter和Setter方法
 

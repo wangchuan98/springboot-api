@@ -32,7 +32,9 @@ public class TrainingOrderController {
     //2019-12-20
     @Autowired
     private TrainingOrderService orderService;
+    //分页查询默认一页的数量
     private  final  Integer PAGESIZE=5;
+    //非空检验可以为空的数据
     private  final  String[] ORDER_CANNULL={"orderid","status","studentid","coachid","coach","student","course"};
     private  final  String[] HOLIDAY_CANNULL={"orderid","status","studentid","coach","student","course","courseid"};
     @ApiOperation(value="预约状态查询", notes="预约状态查询接口")

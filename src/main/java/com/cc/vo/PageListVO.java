@@ -11,6 +11,8 @@ import java.util.List;
 public class PageListVO<E> {
     //总页数
     private Integer totalPage;
+    //数据列表
+    private List<E> rows;
 
     public Integer getTotalPage() {
         return totalPage;
@@ -28,5 +30,5 @@ public class PageListVO<E> {
         this.rows = rows;
     }
 
-    private List<E> rows;
+
 }

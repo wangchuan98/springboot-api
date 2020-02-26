@@ -18,8 +18,8 @@ public interface CoachMapper {
     Integer queryCountByParams(@Param("map") Map<String,Object> map);
     //插入一个coach
     void coachInsert(Coach coach);
-
+    //更新教练信息
     Integer updatebyCoachId(@Param("map") Map<String,Object> map);
-
+    //失效
     Integer enablebyCoachId(@Param("list") List<String> list,@Param("enable") Integer enable);
 }

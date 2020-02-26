@@ -10,6 +10,8 @@ import com.cc.vo.UserInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
@@ -30,10 +32,10 @@ public class LoginController {
         String face = userVO.getFace();
         System.out.println(face.length());
         //校验空值
-
         if (StringUtil.isEmpty(username) || StringUtil.isEmpty(password)) {
             return JsonResult.error("用户名或密码为空");
         }
+        //密码加密
         String MDPassWord = MD5Util.getMD5Str(password);
         UserInfoVO result = userService.queryUserForLogin(username, MDPassWord, face);
 
@@ -52,7 +54,9 @@ public class LoginController {
         if (StringUtil.isEmpty(userId) || StringUtil.isEmpty(password)) {
             return JsonResult.error("用户ID或密码为空");
         }
+        //密码加密
         String MDPassWord = MD5Util.getMD5Str(password);
+        //验证
         boolean flag = userService.confirmPwd(userId, MDPassWord);
         if (flag) {
             return JsonResult.success("验证成功", flag);
@@ -62,6 +66,7 @@ public class LoginController {
 
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @RequestMapping(value = "/changepwd")
     public JsonResult changePwd(@RequestBody UserInfoVO userVO) throws Exception {
         String userId = userVO.getUserId();

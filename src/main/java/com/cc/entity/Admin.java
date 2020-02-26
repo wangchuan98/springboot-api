@@ -7,9 +7,13 @@ package com.cc.entity;
  * @create: 2020-01-10
  */
 public class Admin {
+    //管理员id
     private  String adminid;
+    //管理员名称
     private  String nickname;
+    //用户id
     private  String userid;
+    //失效标志
     private  Integer enable;
 
     public Integer getEnable() {

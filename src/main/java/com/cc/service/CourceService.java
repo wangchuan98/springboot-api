@@ -20,6 +20,6 @@ public interface CourceService {
     List<CourseVO> queryCoachList(Map<String,Object> where, PageInfo pageInfo);
     //查询课程总数
     Integer queryCountCoach(Map<String,Object> where);
-
+    //更新课程
     void updateCourse(List<String> ids,Integer status);
 }

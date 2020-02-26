@@ -41,11 +41,13 @@ public class AdminCourseController {
     @RequestMapping(value = "/save")
     @ResponseBody
     public JsonResult save(@RequestBody  CourseVO courseVO, HttpServletRequest request) throws Exception {
+       //获取创建人信息
         HttpSession session=request.getSession();
         if(session!=null) {
             String creator =String.valueOf(session.getAttribute("userId"));
             courseVO.setCreator(creator);
         }
+        //非空检测
         if (ObjectUtil.objectIsEmpty(courseVO, COURSE_SAVECANNULL))
             return JsonResult.error("必填参数存在空值");
         courceService.saveCourse(courseVO);

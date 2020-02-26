@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @program: springboot-api
- * @description:
+ * @description:管理端登录拦截器
  * @author: wangchuan
  * @create: 2020-01-10
  */
@@ -27,9 +27,6 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
 
         String requestUrl = request.getRequestURI();
         System.out.println("进入拦截器："+requestUrl);
-        if(1==1){
-            return  true;
-        }
         Object userId=request.getSession().getAttribute("userId");
         Object session_keyObj=request.getSession().getAttribute("session_key");
         if(null == userId||null ==session_keyObj){

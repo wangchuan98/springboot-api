@@ -2,6 +2,7 @@ package com.cc.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/admin")
 public class AdminHomeController {
+    //将url请求，转到相对应的页面
     @RequestMapping(value = "/addcoach")
     public String addCoach(HttpServletRequest request){
         return  "addcoach";
@@ -43,9 +45,13 @@ public class AdminHomeController {
     public String welcome(HttpServletRequest request){
         return  "welcome";
     }
-
     @RequestMapping(value = "/relogin")
     public String relogin(HttpServletRequest request){
         return  "relogin";
     }
+    @RequestMapping(value = "/index",method = RequestMethod.GET)
+    public String index(HttpServletRequest request){
+        return  "home.html";
+    }
+
 }

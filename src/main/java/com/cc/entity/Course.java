@@ -10,12 +10,19 @@ import java.sql.Date;
  */
 public class Course {
 
+    //课程id
     private  String courseid;
+    //学员id
     private  String studentid;
+    //教练id
     private  String coachid;
+    //驾照类型
     private  String licensetype;
+    //课程类型
     private  String coursetype;
+    //科目
     private  String subject;
+    //课程状态
     private  Integer status;
     //创建人
     private  String creator;

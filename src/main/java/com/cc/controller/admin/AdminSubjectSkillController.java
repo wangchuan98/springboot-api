@@ -8,6 +8,8 @@ import com.cc.entity.SubjectSkill;
 import com.cc.service.SubjectSkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -58,6 +60,7 @@ public class AdminSubjectSkillController {
         return "skilllist";
     }
 
+    @Transactional(propagation=Propagation.REQUIRED)
     @RequestMapping("/skilldelete")
     @ResponseBody
     public JsonResult skilldelete(HttpServletRequest request){
