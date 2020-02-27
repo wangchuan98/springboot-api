@@ -18,14 +18,11 @@
 
 ## 学员端
 
-<img src="/screenshots/order11.jpg" alt="image" width="33%">
-<img src="/screenshots/order12.jpg" alt="image" width="33%">
-<img src="/screenshots/order13.jpg" alt="image" width="33%">
-<img src="/screenshots/order14.jpg" alt="image" width="33%">
-<img src="/screenshots/order15.jpg" alt="image" width="33%">
-<img src="/screenshots/order16.jpg" alt="image" width="33%">
-<img src="/screenshots/order17.jpg" alt="image" width="33%">
-<img src="/screenshots/order18.jpg" alt="image" width="33%">
+<img src="/screenshots/order11.jpg" alt="image" width="33%"><img src="/screenshots/order12.jpg" alt="image" width="33%"><img src="/screenshots/order13.jpg" alt="image" width="33%">
+<img src="/screenshots/order14.jpg" alt="image" width="33%"><img src="/screenshots/order15.jpg" alt="image" width="33%"><img src="/screenshots/order16.jpg" alt="image" width="33%">
+<img src="/screenshots/order17.jpg" alt="image" width="33%"><img src="/screenshots/order18.jpg" alt="image" width="33%">
+
+
 ## 教练端
 ![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order21.jpg)
 ![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order22.jpg)
