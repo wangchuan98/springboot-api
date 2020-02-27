@@ -17,6 +17,7 @@
 * 用户信息修改
 
 ## 学员端
+![image](https://github.com/MaiEmily/map/blob/master/public/image/20190528145810708.png)
 ![image] (https://github.com/wangchuan98/springboot-api/tree/master/screenshots/admin1.png) 
 ![image] (https://github.com/wangchuan98/springboot-api/tree/master/screenshots/admin2.png) 
 ![image] (https://github.com/wangchuan98/springboot-api/tree/master/screenshots/admin3.png) 
