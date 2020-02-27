@@ -24,17 +24,13 @@
 
 
 ## 教练端
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order21.jpg)
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order22.jpg)
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order23.jpg)
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order24.jpg)
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order25.jpg)
+
+<img src="/screenshots/order21.jpg" alt="image" width="33%"><img src="/screenshots/order22.jpg" alt="image" width="33%"><img src="/screenshots/order23.jpg" alt="image" width="33%">
+<img src="/screenshots/order24.jpg" alt="image" width="33%"><img src="/screenshots/order25.jpg" alt="image" width="33%">
 
 ## 管理员端
-![image](https://github.com/wangchuan98/springboot-api/tree/master/screenshots/admin1.png)
-![image](https://github.com/wangchuan98/springboot-api/tree/master/screenshots/admin2.png)
-![image](https://github.com/wangchuan98/springboot-api/tree/master/screenshots/admin3.png)
-![image](https://github.com/wangchuan98/springboot-api/tree/master/screenshots/admin4.png)
-![image](https://github.com/wangchuan98/springboot-api/tree/master/screenshots/admin5.png)
-![image](https://github.com/wangchuan98/springboot-api/tree/master/screenshots/admin6.png)
+
+<img src="/screenshots/admin1.png" alt="image" width="50%"><img src="/screenshots/admin2.png" alt="image" width="50%">
+<img src="/screenshots/admin3.png" alt="image" width="50%"><img src="/screenshots/admin4.png" alt="image" width="50%">
+<img src="/screenshots/admin5.png" alt="image" width="50%"><img src="/screenshots/admin6.png" alt="image" width="50%">
 
