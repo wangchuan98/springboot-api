@@ -17,15 +17,15 @@
 * 用户信息修改
 
 ## 学员端
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order11.jpg)
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order12.jpg)
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order13.jpg)
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order14.jpg)
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order15.jpg)
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order16.jpg)
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order17.jpg)
-![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order18.jpg)
 
+<img src="/screenshots/order11.jpg" alt="image" width="33%">
+<img src="/screenshots/order12.jpg" alt="image" width="33%">
+<img src="/screenshots/order13.jpg" alt="image" width="33%">
+<img src="/screenshots/order14.jpg" alt="image" width="33%">
+<img src="/screenshots/order15.jpg" alt="image" width="33%">
+<img src="/screenshots/order16.jpg" alt="image" width="33%">
+<img src="/screenshots/order17.jpg" alt="image" width="33%">
+<img src="/screenshots/order18.jpg" alt="image" width="33%">
 ## 教练端
 ![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order21.jpg)
 ![image](https://github.com/wangchuan98/springboot-api/blob/master/screenshots/order22.jpg)
