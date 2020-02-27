@@ -26,8 +26,8 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/")
-                .addResourceLocations("file:D:/order/");
-               // .addResourceLocations("file:/home/ubuntu/workspace");
+//                .addResourceLocations("file:D:/order/");
+                .addResourceLocations("file:/home/ubuntu/workspace/");
         registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
 

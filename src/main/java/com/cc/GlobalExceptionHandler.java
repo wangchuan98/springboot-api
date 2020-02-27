@@ -1,12 +1,10 @@
 package com.cc;
 
 import com.cc.common.JsonResult;
-import com.cc.common.exception.AdminCommonException;
+import com.cc.common.exception.CommonException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @program: springboot-api
@@ -17,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(AdminCommonException.class)
+    @ExceptionHandler(CommonException.class)
     @ResponseBody
     public JsonResult adminException(Exception e) {
         return JsonResult.error(e.getMessage());

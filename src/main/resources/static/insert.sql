@@ -1,9 +1,9 @@
 <!--系统数据-->
 INSERT INTO `users`(`userid`,`username`,`password`,`identity`)
-VALUES('default','default','ICy5YqxZB1uWSwcVLSNLcA==',1)
+VALUES('default','default','ICy5YqxZB1uWSwcVLSNLcA==',1);
 
 INSERT INTO `student`(`studentid`,`name`,`sex`,`age`,`phone`,`userid`)
-VALUES('default','default',1,20,'default','default')
+VALUES('default','default',1,20,'default','default');
 
 
 INSERT INTO `users`(`userid`,`username`,`password`,`identity`)
@@ -65,7 +65,7 @@ VALUES('001','s002','c003',2,'C1','vip','科目二')
 
 
 
-INSERT INTO notice (`noticeid`,`title`,`content`,`createtime`,`creator`)
+INSERT INTO notice (`noticeid`,`title`,`content`,`creattime`,`creator`)
 VALUES
 ('temp001','驾校“五一劳动节”放假通知','新月驾校“劳动节”期间（2019.5.1）放假一天，
 届时车辆停训，班车暂停运行，放假期间网络预约正常开放。',"2020-01-07",'a001'),

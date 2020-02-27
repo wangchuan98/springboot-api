@@ -6,8 +6,8 @@ package com.cc.common.exception;
  * @author: wangchuan
  * @create: 2020-02-24
  */
-public class AdminCommonException extends RuntimeException {
-    public  AdminCommonException(String msg){
+public class CommonException extends RuntimeException {
+    public CommonException(String msg){
         super(msg);
     }
 

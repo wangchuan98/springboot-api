@@ -1,22 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>简约车管理员端</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta charset="UTF-8">
+    <title>wangchuan</title>
+    <style type="text/css">
+        .main {
+            flex-direction: column;
+            text-align: center;
+            height: calc(100% - 10px);
+        }
 
+        .main-footer {
+            border-top: 1px solid #d2d6de;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            position: absolute;
+            z-index: 3;
 
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+        }
+        a:hover {
+            color: #000000;
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
-<h1>用户在其他地点登陆，请重新登陆！</h1>
-<button id="reloginbtn"  onclick="relogin()" >重新登陆</button>
-<script>
-    function  relogin() {
-        window.location.href="/admin/login";
-    }
-</script>
+<div class="main">
+    <h1>welcome!</h1>
+</div>
+<div class="main-footer">
+    <p>
+        © 2020 wangchuan <a href="http://beian.miit.gov.cn">赣ICP备20000250号</a>
+    </p>
+
+</div>
+
 </body>
 
 </html>

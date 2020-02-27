@@ -1,5 +1,6 @@
 package com.cc.service.impl;
 
+import com.cc.common.exception.CommonException;
 import com.cc.common.utils.DateUtil;
 import com.cc.common.utils.SnowflakeIdWorker;
 import com.cc.common.utils.StringUtil;
@@ -82,7 +83,12 @@ public class TrainingOrderServiceImpl implements TrainingOrderService {
             String id=this.createId(trainingOrder);
             trainingOrder.setOrderid(String.valueOf(id));
             trainingOrder.setStatus(Status.hava_order.value());
-            orderMapper.insertTrainingOrderOne(trainingOrder);
+            try {
+                orderMapper.insertTrainingOrderOne(trainingOrder);
+            }catch (Exception e){
+                throw new CommonException("预约失败");
+            }
+
             return true;
         } else if (queryresult.getStatus() == Status.can_order.value()) {
             TrainingOrder updateorder = new TrainingOrder();

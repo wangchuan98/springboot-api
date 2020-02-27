@@ -9,17 +9,17 @@
         notice.noticeid,
         notice.title,
         notice.content,
-        notice.createtime,
+        notice.creattime,
         notice.creator
         from  notice notice
-        order by  notice.createtime  DESC  limit #{map.currIndex} , #{map.pageSize}
+        order by  notice.creattime  DESC  limit #{map.currIndex} , #{map.pageSize}
     </select>
 
     <select id="queryNoticeById" resultType="Notice">
          select
         notice.title,
         notice.content,
-        notice.createtime,
+        notice.creattime,
         notice.creator
         from  notice
         where noticeid=#{id}

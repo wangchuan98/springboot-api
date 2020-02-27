@@ -38,7 +38,8 @@ public class Coach {
     private Date creattime;
     private  User user;
     //工作照片地址前缀
-    public  static  final  String PHOTO_PREFIX="http://localhost:8080/workphoto/";
+    //public  static  final  String PHOTO_PREFIX="http://localhost:8080/workphoto/";
+     public  static  final  String PHOTO_PREFIX="https://www.wangchuan98.com/workphoto/";
     public  static  final  String PHOTO_SUFFIX=".jpg";
     //工作照片地址后缀
 

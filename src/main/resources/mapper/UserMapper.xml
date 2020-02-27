@@ -37,7 +37,7 @@
         select
         username,
         password
-        from Users
+        from users
         where userid=#{userId}
     </select>
     <select id="isExsitUserName"  resultType="User">

@@ -21,7 +21,7 @@ public class Notice {
     private  String creator;
     //发布时间
     @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
-    private  Date   createTime;
+    private  Date   creatTime;
 
     public String getNoticeId() {
         return noticeId;
@@ -55,11 +55,11 @@ public class Notice {
         this.creator = creator;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatTime() {
+        return creatTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
     }
 }

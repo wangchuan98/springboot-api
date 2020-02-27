@@ -1,6 +1,6 @@
 package com.cc.service.impl;
 
-import com.cc.common.exception.AdminCommonException;
+import com.cc.common.exception.CommonException;
 import com.cc.common.utils.SnowflakeIdWorker;
 import com.cc.dao.CourseMapper;
 import com.cc.entity.Course;
@@ -39,7 +39,7 @@ public class CourceServiceImpl implements CourceService {
         ids.add(courseVO.getStudentId());
         List<Course> courseList=courseMapper.queryByStudentId(ids);
         if(courseList!=null&&courseList.size()>0)
-            throw new AdminCommonException("学员已经有正在进行的课程！");
+            throw new CommonException("学员已经有正在进行的课程！");
         Date creattime = new Date(System.currentTimeMillis());
         //创建coach
         Course course = new Course();

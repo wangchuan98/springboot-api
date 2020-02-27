@@ -44,7 +44,7 @@ public class AdminCoachController {
     private final String[] COACH_SAVECANNULL = {"coachId", "tel","face","workphoto"};
     private final String[] COACH_UPDATACANNULL = {"coachId", "tel", "username", "password","face","workphoto"};
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(rollbackFor = { Exception.class })
     @RequestMapping(value = "/save")
     @ResponseBody
     public JsonResult save(HttpServletRequest request) throws Exception {
@@ -198,10 +198,10 @@ public class AdminCoachController {
         Part part = request.getPart("workphoto");
         String suffix = ".jpg";
         if (part != null) {
-            //String upload="home/ubuntu/workspace";
-            //String filename = upload + "/" + CoachId + suffix;
-            String upload = "D:\\order\\workphoto";
-            String filename = upload + "\\" + CoachId + suffix;
+            String upload="/home/ubuntu/workspace/workphoto";
+            String filename = upload + "/" + CoachId + suffix;
+//            String upload = "D:\\order\\workphoto";
+//            String filename = upload + "\\" + CoachId + suffix;
             part.write(filename);
         }
     }

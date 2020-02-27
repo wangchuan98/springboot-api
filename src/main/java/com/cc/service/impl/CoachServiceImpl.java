@@ -1,7 +1,6 @@
 package com.cc.service.impl;
 
-import com.cc.common.JsonResult;
-import com.cc.common.exception.AdminCommonException;
+import com.cc.common.exception.CommonException;
 import com.cc.common.utils.FlowCodeUtil;
 import com.cc.common.utils.SnowflakeIdWorker;
 import com.cc.dao.CoachMapper;
@@ -9,10 +8,8 @@ import com.cc.dao.CourseMapper;
 import com.cc.dao.UserMapper;
 import com.cc.entity.*;
 import com.cc.entity.Coach;
-import com.cc.entity.Coach;
 import com.cc.service.CoachService;
 import com.cc.vo.CoachVO;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -181,7 +178,7 @@ public class CoachServiceImpl implements CoachService {
                 msg=msg+item.getCoachid()+" ";
             }
             msg=msg+"仍存在进行的课程";
-            throw  new AdminCommonException(msg);
+            throw  new CommonException(msg);
         }
     }
 }
